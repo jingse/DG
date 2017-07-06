@@ -19,7 +19,7 @@
 
         <activity
             android:name=".chat.ChatActivity"
-            android:label="@string/chat_peple">
+            android:theme="@style/ChatTitleBarStyle">
         </activity>
 
     </application>

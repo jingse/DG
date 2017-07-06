@@ -42,6 +42,8 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         }
         viewHolder.friendImage.setImageResource(msg.getImageId());
         viewHolder.friendName.setText(msg.getName());
+        viewHolder.latestMsg.setText(msg.getLatestMsg());
+        viewHolder.latestMsgTime.setText(msg.getLatestMsgTime());
         return view;
     }
 

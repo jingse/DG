@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="40.0dip"
         android:orientation="horizontal"
-        android:background="#FFFFFF" >
+        android:background="@color/colorPrimary" >
 
         <TextView
             android:id="@+id/text1"
@@ -18,7 +18,7 @@
             android:layout_weight="1.0"
             android:gravity="center"
             android:text="@string/messages"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:textSize="20.0dip" />
 
         <TextView
@@ -28,7 +28,7 @@
             android:layout_weight="1.0"
             android:gravity="center"
             android:text="@string/contacts"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:textSize="20.0dip" />
     </LinearLayout>
 

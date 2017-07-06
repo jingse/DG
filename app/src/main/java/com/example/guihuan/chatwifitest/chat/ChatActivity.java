@@ -3,14 +3,14 @@ package com.example.guihuan.chatwifitest.chat;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.guihuan.chatwifitest.R;
 import com.example.guihuan.chatwifitest.utils.CircleImageView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +31,10 @@ public class ChatActivity extends Activity {
     private ImageButton showFile;
     private ImageButton showEmoji;
 
+    private ImageButton backToMain;
+
     private CircleImageView chatting_person_head;
-    private Text chatting_person_name;
+    private TextView chatting_person_name;
 
 
 
@@ -44,12 +46,18 @@ public class ChatActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); // 注意顺序
         setContentView(R.layout.activity_chatting);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.chat_title_bar); // 注意顺序
+
         initChatMsgs();
 
         adapter = new ChatMsgAdapter(ChatActivity.this, R.layout.chat_msg_item, chatMsgList);
         chatMsgListView = findViewById(R.id.msg_list_view);
         chatMsgListView.setAdapter(adapter);
+
+
 
         chatting_person_head = findViewById(R.id.chatting_person_head);
         chatting_person_name = findViewById(R.id.chatting_person_name);

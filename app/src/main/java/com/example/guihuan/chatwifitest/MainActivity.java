@@ -30,10 +30,17 @@ public class MainActivity  extends AppCompatActivity {
     private int offset = 0;// 动画图片偏移量
     private int currIndex = 0;// 当前页卡编号
     private int bmpW;// 动画图片宽度
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        //requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); // 注意顺序
         setContentView(R.layout.main);
+        //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,      // 注意顺序
+                //R.layout.main_title_bar);
+
         InitImageView();
         InitTextView();
         InitViewPager();
