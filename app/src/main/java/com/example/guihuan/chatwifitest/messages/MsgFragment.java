@@ -1,4 +1,4 @@
-package com.example.guihuan.chatwifitest;
+package com.example.guihuan.chatwifitest.messages;
 
 
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.guihuan.chatwifitest.R;
 import com.example.guihuan.chatwifitest.chat.ChatActivity;
 
 import java.util.ArrayList;
@@ -48,13 +49,13 @@ public class MsgFragment extends Fragment {
 
 
     private void initMessages() {
-        Msg friend1 = new Msg("朋友1", R.drawable.head1);
+        Msg friend1 = new Msg("朋友1", R.drawable.head1, "我在南锣鼓巷", "上午10:00");
         msgList.add(friend1);
-        Msg friend2 = new Msg("朋友2", R.drawable.head2);
+        Msg friend2 = new Msg("朋友2", R.drawable.head2, "你好", "刚刚");
         msgList.add(friend2);
-        Msg friend3 = new Msg("朋友3", R.drawable.head3);
+        Msg friend3 = new Msg("朋友3", R.drawable.head3, "再见咯", "昨天20:58");
         msgList.add(friend3);
-        Msg friend4 = new Msg("朋友4", R.drawable.head4);
+        Msg friend4 = new Msg("朋友4", R.drawable.head4, "吃了么？", "今天12:23");
         msgList.add(friend4);
 
     }

@@ -13,10 +13,10 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.guihuan.chatwifitest.contacts.ContactsFragment;
 import com.example.guihuan.chatwifitest.contacts.MyFragmentPagerAdapter;
+import com.example.guihuan.chatwifitest.messages.MsgFragment;
 
 import java.util.ArrayList;
 
@@ -114,7 +114,7 @@ public class MainActivity  extends AppCompatActivity {
             animation.setFillAfter(true);// True:图片停在动画结束位置
             animation.setDuration(300);
             imageView.startAnimation(animation);
-            Toast.makeText(MainActivity.this, "您选择了"+ viewpager.getCurrentItem()+"页卡", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, "您选择了"+ viewpager.getCurrentItem()+"页卡", Toast.LENGTH_SHORT).show();
         }
 
     }

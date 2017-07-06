@@ -3,12 +3,14 @@ package com.example.guihuan.chatwifitest.chat;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.guihuan.chatwifitest.R;
+import com.example.guihuan.chatwifitest.utils.CircleImageView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ public class ChatActivity extends Activity {
     private ChatMsgAdapter adapter;
 
     private EditText inputText;
-    private Button send;
+    private ImageButton send;
     private ImageButton recordSound;
     private ImageButton showPicture;
     private ImageButton showCamera;
@@ -29,6 +31,8 @@ public class ChatActivity extends Activity {
     private ImageButton showFile;
     private ImageButton showEmoji;
 
+    private CircleImageView chatting_person_head;
+    private Text chatting_person_name;
 
 
 
@@ -46,6 +50,11 @@ public class ChatActivity extends Activity {
         adapter = new ChatMsgAdapter(ChatActivity.this, R.layout.chat_msg_item, chatMsgList);
         chatMsgListView = findViewById(R.id.msg_list_view);
         chatMsgListView.setAdapter(adapter);
+
+        chatting_person_head = findViewById(R.id.chatting_person_head);
+        chatting_person_name = findViewById(R.id.chatting_person_name);
+
+
 
         inputText = findViewById(R.id.input_text);
         send = findViewById(R.id.send);

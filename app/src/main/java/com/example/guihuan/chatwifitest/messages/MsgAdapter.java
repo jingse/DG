@@ -1,4 +1,4 @@
-package com.example.guihuan.chatwifitest;
+package com.example.guihuan.chatwifitest.messages;
 
 
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.guihuan.chatwifitest.R;
 
 import java.util.List;
 
@@ -29,23 +31,26 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
             viewHolder = new ViewHolder();
-            viewHolder.fruitImage = view.findViewById(R.id.friend_image);
-            viewHolder.fruitName = view.findViewById(R.id.friend_name);
+            viewHolder.friendImage = view.findViewById(R.id.friend_image);
+            viewHolder.friendName = view.findViewById(R.id.friend_name);
+            viewHolder.latestMsg = view.findViewById(R.id.latest_msg);
+            viewHolder.latestMsgTime = view.findViewById(R.id.latest_msg_time);
             view.setTag(viewHolder);
         } else {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.fruitImage.setImageResource(msg.getImageId());
-        viewHolder.fruitName.setText(msg.getName());
+        viewHolder.friendImage.setImageResource(msg.getImageId());
+        viewHolder.friendName.setText(msg.getName());
         return view;
     }
 
     class ViewHolder {
 
-        ImageView fruitImage;
-
-        TextView fruitName;
+        ImageView friendImage;
+        TextView friendName;
+        TextView latestMsg;
+        TextView latestMsgTime;
 
     }
 

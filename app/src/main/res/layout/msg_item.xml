@@ -4,15 +4,34 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <ImageView
+    <com.example.guihuan.chatwifitest.utils.CircleImageView
         android:id="@+id/friend_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp" />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="7dip"/>
 
     <TextView
         android:id="@+id/friend_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="top"
+        android:layout_marginTop="11dip"
         android:layout_marginLeft="10dip" />
+
+    <TextView
+        android:id="@+id/latest_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="11dip"
+        android:layout_marginLeft="10dip" />
+
+    <TextView
+        android:id="@+id/latest_msg_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="15dip"
+        android:layout_marginRight="10dip" />
+
 </LinearLayout>

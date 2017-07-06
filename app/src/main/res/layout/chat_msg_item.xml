@@ -9,31 +9,81 @@
         android:id="@+id/left_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:background="@drawable/message_left" >
+        android:layout_gravity="left">
 
-        <TextView
-            android:id="@+id/left_msg"
+        <com.example.guihuan.chatwifitest.utils.CircleImageView
+            android:id="@+id/chatting_person_head"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/head1"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:textColor="#fff" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/chatting_person_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:background="@drawable/message_left" >
+
+                <TextView
+                    android:id="@+id/left_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:textColor="#fff" />
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/right_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:background="@drawable/message_right" >
+        android:layout_gravity="right">
 
-        <TextView
-            android:id="@+id/right_msg"
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp" />
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@drawable/message_right" >
+
+                <TextView
+                    android:id="@+id/right_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:textColor="#fff" />
+            </LinearLayout>
+
+            <com.example.guihuan.chatwifitest.utils.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/headmine"/>
+
+        </LinearLayout>
     </LinearLayout>
+
 
 </LinearLayout>
