@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#d8e0e8"
+              android:orientation="vertical">
+
+    <ListView
+        android:id="@+id/msg_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="#0000" >
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Type somthing here"
+            android:maxLines="2" />
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_margin="7dp"
+            android:padding="2dp"
+            android:id="@+id/recordSound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/record"/>
+
+        <ImageButton
+            android:layout_margin="7dp"
+            android:padding="2dp"
+            android:id="@+id/showPicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/picture"/>
+
+        <ImageButton
+            android:layout_margin="7dp"
+            android:padding="2dp"
+            android:id="@+id/showCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/camera"/>
+
+        <ImageButton
+            android:layout_margin="7dp"
+            android:padding="2dp"
+            android:id="@+id/showVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/video"/>
+
+        <ImageButton
+            android:layout_margin="7dp"
+            android:padding="2dp"
+            android:id="@+id/showFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/folder"/>
+
+        <ImageButton
+            android:layout_margin="7dp"
+            android:padding="2dp"
+            android:id="@+id/showEmoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/emoji"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/buddy_listview_image"
+        android:layout_width="45dip"
+        android:layout_height="45dip"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"/>
+    <TextView
+        android:id="@+id/buddy_listview_group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/buddy_listview_image"
+        android:text="分组名称"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/buddy_listview_group_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:text="[10/10]"
+        android:textSize="18sp"/>
+</RelativeLayout>
+

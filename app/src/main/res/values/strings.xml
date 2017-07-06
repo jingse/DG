@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ChatWifiTest</string>
+    <string name="chat_peple">XXX</string>
+
+    <!-- Emoji -->
+    <string name="face_recently">Recently</string>
+    <string name="face_Emoji">Emoji</string>
+    <string name="face_set_one">Default</string>
+
+    <!-- Contacts -->
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_view_pager_demo">ViewPagerDemo</string>
+    <string name="contacts">联系人</string>
+    <string name="messages">消息</string>
+</resources>
