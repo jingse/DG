@@ -1,22 +1,50 @@
 package com.example.guihuan.chatwifitest.chat;
 
-import android.app.Activity;
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.ContentUris;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
+import android.text.Editable;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.guihuan.chatwifitest.R;
+import com.example.guihuan.chatwifitest.emoji.Emoji;
+import com.example.guihuan.chatwifitest.emoji.FaceFragment;
 import com.example.guihuan.chatwifitest.utils.CircleImageView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChatActivity extends Activity {
+
+public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmojiClickListener {
 
     private List<ChatMsg> chatMsgList = new ArrayList<>();
     private ListView chatMsgListView;
@@ -32,14 +60,46 @@ public class ChatActivity extends Activity {
     private ImageButton showEmoji;
 
     private ImageButton backToMain;
+    private FrameLayout container;
 
     private CircleImageView chatting_person_head;
     private TextView chatting_person_name;
 
+    private Boolean isShowRecord;
+    private Boolean isShowCamera;
+    private Boolean isShowPicture;
+    private Boolean isShowVideo;
+    private Boolean isShowFile;
+    private Boolean isShowEmoji;
+
+    //自定义变量
+    public static final int TAKE_PHOTO = 1;
+    public static final int CHOOSE_PHOTO = 2;
+    private Uri imageUri;//图片路径
 
 
+    private Handler chatHandler = new Handler() {
 
-
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 4:
+                    TransferMsg transferMsg = (TransferMsg) msg.obj;
+                    if (transferMsg.getTo().contains("All")) {
+                        //群聊信息
+                        //dealPublic(transferMsg.getFrom(),transferMsg.getContent());
+                    } else {
+                        //私聊信息
+                        //dealPrivate(transferMsg.getFrom(),transferMsg.getContent());
+                    }
+                    break;
+                case 9://定位聊天信息为最后一条
+                    chatMsgListView.setSelection(chatMsgList.size()); // 将ListView定位到最后一行
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -58,18 +118,51 @@ public class ChatActivity extends Activity {
         chatMsgListView.setAdapter(adapter);
 
 
-
         chatting_person_head = findViewById(R.id.chatting_person_head);
         chatting_person_name = findViewById(R.id.chatting_person_name);
 
 
+        backToMain = findViewById(R.id.chatBackToMain);
 
         inputText = findViewById(R.id.input_text);
         send = findViewById(R.id.send);
 
+        inputText.setMovementMethod(LinkMovementMethod.getInstance());
+
+        recordSound = findViewById(R.id.recordSound);
+        showCamera = findViewById(R.id.showCamera);
+        showPicture = findViewById(R.id.showPicture);
+        showVideo = findViewById(R.id.showVideo);
+        showFile = findViewById(R.id.showFile);
+        showEmoji = findViewById(R.id.showEmoji);
+
+        container = findViewById(R.id.Container);
+        container.setVisibility(View.GONE);
+
+        isShowRecord = false;
+        isShowCamera = false;
+        isShowPicture = false;
+        isShowVideo = false;
+        isShowFile = false;
+        isShowEmoji = false;
 
 
-
+        inputText.setOnFocusChangeListener(new android.view.View.
+                OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    // 此处为得到焦点时的处理内容
+                    container.setVisibility(View.GONE);
+                    //1.得到InputMethodManager对象
+                    InputMethodManager imm = (InputMethodManager) getSystemService(ChatActivity.this.INPUT_METHOD_SERVICE);
+                    //2.调用showSoftInput方法显示软键盘，其中view为聚焦的view组件
+                    imm.showSoftInput(inputText, InputMethodManager.SHOW_FORCED);
+                } else {
+                    // 此处为失去焦点时的处理内容
+                }
+            }
+        });
 
         send.setOnClickListener(new ListView.OnClickListener() {
             @Override
@@ -79,58 +172,111 @@ public class ChatActivity extends Activity {
                     ChatMsg chatMsg = new ChatMsg(content, ChatMsg.TYPE_SENT);
                     chatMsgList.add(chatMsg);
                     adapter.notifyDataSetChanged();
+                    container.setVisibility(View.GONE);
                     chatMsgListView.setSelection(chatMsgList.size());
                     inputText.setText("");
                 }
             }
         });
 
-        /*recordSound.setOnClickListener(new ListView.OnClickListener(){
+
+        backToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(ChatActivity.this, "back", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 
-        showPicture.setOnClickListener(new ListView.OnClickListener(){
+        recordSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(ChatActivity.this, "sound", Toast.LENGTH_SHORT).show();
             }
         });
 
-        showCamera.setOnClickListener(new ListView.OnClickListener(){
+        showCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(ChatActivity.this, "camera", Toast.LENGTH_SHORT).show();
 
+                // 创建File对象，用于存储拍照后的图片
+                File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
+                try {
+                    if (outputImage.exists()) {
+                        outputImage.delete();
+                    }
+                    outputImage.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (Build.VERSION.SDK_INT < 24) {
+                    //将File对象转换为Uri并启动照相程序
+                    imageUri = Uri.fromFile(outputImage);
+                } else {
+                    imageUri = FileProvider.getUriForFile(ChatActivity.this, "com.example.cameraalbumtest.fileprovider", outputImage);
+                }
+                // 启动相机程序
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");//照相
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);////指定图片输出地址
+                startActivityForResult(intent, TAKE_PHOTO);//启动照相
             }
         });
 
-        showVideo.setOnClickListener(new ListView.OnClickListener(){
+        showPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(ChatActivity.this, "picture", Toast.LENGTH_SHORT).show();
+                if (ContextCompat.checkSelfPermission(ChatActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(ChatActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                } else {
+                    openAlbum();
+                }
             }
         });
 
-        showFile.setOnClickListener(new ListView.OnClickListener(){
+        showVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(ChatActivity.this, "video", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        showFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ChatActivity.this, "file", Toast.LENGTH_SHORT).show();
             }
         });
 
         showEmoji.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(ChatActivity.this, "emoji", Toast.LENGTH_SHORT).show();
 
+                if (!isShowEmoji) {
+                    container.setVisibility(View.VISIBLE);
+                    isShowEmoji = true;
+                    /*隐藏键盘*/
+                    InputMethodManager imm = (InputMethodManager) getSystemService(ChatActivity.this.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(inputText.getWindowToken(), 0);
+                } else {
+                    container.setVisibility(View.GONE);
+                    isShowEmoji = false;
+                }
+                 /*用handler异步刷新listview*/
+                Message message1 = new Message();
+                message1.what = 9;
+                chatHandler.sendMessage(message1);
 
             }
-        });*/
+        });
 
 
-
+        FaceFragment faceFragment = FaceFragment.Instance();
+        getSupportFragmentManager().beginTransaction().add(R.id.Container, faceFragment).commit();
     }
+
 
     private void initChatMsgs() {
         ChatMsg chatMsg1 = new ChatMsg("Hello guy.", ChatMsg.TYPE_RECEIVED);
@@ -141,6 +287,153 @@ public class ChatActivity extends Activity {
         chatMsgList.add(chatMsg3);
     }
 
+    //打开相册
+    private void openAlbum() {
+        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        intent.setType("image/*");
+        startActivityForResult(intent, CHOOSE_PHOTO); // 打开相册
+    }
 
+    //获得本机的允许
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openAlbum();
+                } else {
+                    Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
+    }
+
+    //将拍摄的照片显示出来
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case TAKE_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    try {
+                        //图片解析成Bitmap对象
+                        // 将拍摄的照片显示出来
+                        inputText.append(Html.fromHtml("<imgsrc='" + imageUri + "'/>", imageGetter, new MTagHandler(this)));
+                        //Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        //picture.setImageBitmap(bitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case CHOOSE_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    // 判断手机系统版本号
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        // 4.4及以上系统使用这个方法处理图片
+                        handleImageOnKitKat(data);
+                    } else {
+                        // 4.4以下系统使用这个方法处理图片
+                        handleImageBeforeKitKat(data);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @TargetApi(19)
+    private void handleImageOnKitKat(Intent data) {
+        String imagePath = null;
+        Uri uri = data.getData();
+        Log.d("TAG", "handleImageOnKitKat: uri is " + uri);
+        if (DocumentsContract.isDocumentUri(this, uri)) {
+            // 如果是document类型的Uri，则通过document id处理
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                String id = docId.split(":")[1]; // 解析出数字格式的id
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                imagePath = getImagePath(contentUri, null);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            // 如果是content类型的Uri，则使用普通方式处理
+            imagePath = getImagePath(uri, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            // 如果是file类型的Uri，直接获取图片路径即可
+            imagePath = uri.getPath();
+        }
+        displayImage(imagePath); // 根据图片路径显示图片
+    }
+
+    private void handleImageBeforeKitKat(Intent data) {
+        Uri uri = data.getData();
+        String imagePath = getImagePath(uri, null);
+        displayImage(imagePath);
+    }
+
+    private String getImagePath(Uri uri, String selection) {
+        String path = null;
+        // 通过Uri和selection来获取真实的图片路径
+        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
+
+    private void displayImage(String imagePath) {
+        if (imagePath != null) {
+            //Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            //picture.setImageBitmap(bitmap);
+
+            inputText.append(Html.fromHtml("<imgsrc='" + imageUri + "'/>", imageGetter, new MTagHandler(this)));
+
+
+        } else {
+            Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    Html.ImageGetter imageGetter = new Html.ImageGetter() {
+
+        @Override
+        public Drawable getDrawable(String source) {
+            int id = Integer.parseInt(source);
+            Drawable drawable = ChatActivity.this.getResources().getDrawable(id);
+            //drawable.setBounds(int left, int top, int right, int bottom);
+            return drawable;
+        }
+    };
+
+    @Override
+    public void onEmojiDelete() {
+
+    }
+
+
+    @Override
+    public void onEmojiClick(Emoji emoji) {
+        if (emoji != null) {
+            int index = inputText.getSelectionStart();
+            Editable editable = inputText.getEditableText();
+
+            if (index < 0) {
+                editable.append(emoji.getContent());
+            } else {
+                editable.insert(index, emoji.getContent());
+            }
+        }
+
+    }
 
 }
+
+
+

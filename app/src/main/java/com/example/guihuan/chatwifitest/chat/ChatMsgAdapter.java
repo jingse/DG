@@ -26,6 +26,9 @@ public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
         ChatMsg chatMsg = getItem(position);
         View view;
         ViewHolder viewHolder;
+
+        String zhengze = "\\[(\\S+?)\\]";  //正则表达式，用来判断消息内是否有表情
+
         if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
             viewHolder = new ViewHolder();
@@ -41,10 +44,13 @@ public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
         if (chatMsg.getType() == ChatMsg.TYPE_RECEIVED) {
             viewHolder.leftLayout.setVisibility(View.VISIBLE);
             viewHolder.rightLayout.setVisibility(View.GONE);
+
             viewHolder.leftMsg.setText(chatMsg.getContent());
+
         } else if(chatMsg.getType() == ChatMsg.TYPE_SENT) {
             viewHolder.rightLayout.setVisibility(View.VISIBLE);
             viewHolder.leftLayout.setVisibility(View.GONE);
+
             viewHolder.rightMsg.setText(chatMsg.getContent());
         }
         return view;

@@ -78,10 +78,10 @@ public class FaceFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_face, container, false);
-        faceViewPager = (ViewPager) view.findViewById(R.id.face_viewPager);
-        faceIndicator = (EmojiIndicatorView) view.findViewById(R.id.face_indicator);
-        faceRecentTv = (TextView) view.findViewById(R.id.face_recent);
-        faceFirstSetTv = (TextView) view.findViewById(R.id.face_first_set);
+        faceViewPager = view.findViewById(R.id.face_viewPager);
+        faceIndicator = view.findViewById(R.id.face_indicator);
+        faceRecentTv = view.findViewById(R.id.face_recent);
+        faceFirstSetTv = view.findViewById(R.id.face_first_set);
         initViews();
         return view;
     }
