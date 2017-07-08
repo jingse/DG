@@ -319,7 +319,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                     try {
                         //图片解析成Bitmap对象
                         // 将拍摄的照片显示出来
-                        inputText.append(Html.fromHtml("<imgsrc='" + imageUri + "'/>", imageGetter, new MTagHandler(this)));
+                        //inputText.append(Html.fromHtml("<imgsrc='" + imageUri + "'/>", imageGetter, new MTagHandler(this)));
                         //Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         //picture.setImageBitmap(bitmap);
                     } catch (Exception e) {
@@ -394,7 +394,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             //Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             //picture.setImageBitmap(bitmap);
 
-            inputText.append(Html.fromHtml("<imgsrc='" + imageUri + "'/>", imageGetter, new MTagHandler(this)));
+            //inputText.append(Html.fromHtml("<imgsrc='" + imageUri + "'/>", imageGetter, new MTagHandler(this)));
 
 
         } else {

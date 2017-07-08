@@ -8,6 +8,8 @@
     <color name="gold">#FFD700</color>
     <color name="azure">#F0FFFF</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="grey">#9d9d9d</color>
 
     <color name="item_pressed_color">#f0f0f0</color>
 </resources>
