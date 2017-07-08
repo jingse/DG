@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">ChatWifiTest</string>
     <string name="chat_peple">XXX</string>
+    <string name="my_name">我</string>
 
     <!-- Emoji -->
-    <string name="face_recently">Recently</string>
+    <string name="face_recently">最近</string>
     <string name="face_Emoji">Emoji</string>
-    <string name="face_set_one">Default</string>
+    <string name="face_set_one">经典</string>
 
     <!-- Contacts -->
     <string name="menu_settings">Settings</string>

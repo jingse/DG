@@ -22,6 +22,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 
 import com.example.guihuan.chatwifitest.R;
 import com.example.guihuan.chatwifitest.emoji.Emoji;
+import com.example.guihuan.chatwifitest.emoji.EmojiUtil;
 import com.example.guihuan.chatwifitest.emoji.FaceFragment;
 import com.example.guihuan.chatwifitest.utils.CircleImageView;
 
@@ -41,7 +43,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmojiClickListener {
@@ -66,10 +67,6 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
     private TextView chatting_person_name;
 
     private Boolean isShowRecord;
-    private Boolean isShowCamera;
-    private Boolean isShowPicture;
-    private Boolean isShowVideo;
-    private Boolean isShowFile;
     private Boolean isShowEmoji;
 
     //自定义变量
@@ -140,10 +137,6 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         container.setVisibility(View.GONE);
 
         isShowRecord = false;
-        isShowCamera = false;
-        isShowPicture = false;
-        isShowVideo = false;
-        isShowFile = false;
         isShowEmoji = false;
 
 
@@ -163,6 +156,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                 }
             }
         });
+
 
         send.setOnClickListener(new ListView.OnClickListener() {
             @Override
@@ -188,12 +182,14 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             }
         });
 
+
         recordSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(ChatActivity.this, "sound", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         showCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,6 +219,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             }
         });
 
+
         showPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,6 +232,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             }
         });
 
+
         showVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,12 +240,14 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             }
         });
 
+
         showFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(ChatActivity.this, "file", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         showEmoji.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,6 +276,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         FaceFragment faceFragment = FaceFragment.Instance();
         getSupportFragmentManager().beginTransaction().add(R.id.Container, faceFragment).commit();
     }
+
 
 
     private void initChatMsgs() {
@@ -412,9 +413,37 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         }
     };
 
+
+
+    private void displayTextView() {
+        try {
+            EmojiUtil.handlerEmojiText(inputText, inputText.getText().toString(), this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public void onEmojiDelete() {
+        String text = inputText.getText().toString();
+        if (text.isEmpty())
+            return;
 
+        if ("]".equals(text.substring(text.length() - 1, text.length()))) {
+            int index = text.lastIndexOf("[");
+            if (index == -1) {
+                int action = KeyEvent.ACTION_DOWN;
+                int code = KeyEvent.KEYCODE_DEL;
+                KeyEvent event = new KeyEvent(action, code);
+                inputText.onKeyDown(KeyEvent.KEYCODE_DEL, event);
+                displayTextView();
+                return;
+            }
+            inputText.getText().delete(index, text.length());
+            displayTextView();
+            return;
+        }
     }
 
 
@@ -426,9 +455,11 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
             if (index < 0) {
                 editable.append(emoji.getContent());
+
             } else {
                 editable.insert(index, emoji.getContent());
             }
+            displayTextView();
         }
 
     }

@@ -4,11 +4,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -21,7 +22,7 @@ import com.example.guihuan.chatwifitest.messages.MsgFragment;
 import java.util.ArrayList;
 
 
-public class MainActivity  extends AppCompatActivity {
+public class MainActivity  extends FragmentActivity {
 
     private ViewPager viewpager;//页卡内容
     private ImageView imageView;// 动画图片
@@ -36,10 +37,10 @@ public class MainActivity  extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        //requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); // 注意顺序
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); // 注意顺序
         setContentView(R.layout.main);
-        //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,      // 注意顺序
-                //R.layout.main_title_bar);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,      // 注意顺序
+                R.layout.main_title_bar);
 
         InitImageView();
         InitTextView();

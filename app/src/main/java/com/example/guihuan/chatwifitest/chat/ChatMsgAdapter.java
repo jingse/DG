@@ -10,7 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.guihuan.chatwifitest.R;
+import com.example.guihuan.chatwifitest.emoji.EmojiUtil;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
@@ -26,8 +28,6 @@ public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
         ChatMsg chatMsg = getItem(position);
         View view;
         ViewHolder viewHolder;
-
-        String zhengze = "\\[(\\S+?)\\]";  //正则表达式，用来判断消息内是否有表情
 
         if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
@@ -46,15 +46,26 @@ public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
             viewHolder.rightLayout.setVisibility(View.GONE);
 
             viewHolder.leftMsg.setText(chatMsg.getContent());
-
+            displayTextView(viewHolder.leftMsg);
         } else if(chatMsg.getType() == ChatMsg.TYPE_SENT) {
             viewHolder.rightLayout.setVisibility(View.VISIBLE);
             viewHolder.leftLayout.setVisibility(View.GONE);
 
             viewHolder.rightMsg.setText(chatMsg.getContent());
+            displayTextView(viewHolder.rightMsg);
         }
         return view;
     }
+
+
+    private void displayTextView(TextView textView) {
+        try {
+            EmojiUtil.handlerEmojiText(textView, textView.getText().toString(), getContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     class ViewHolder {
 

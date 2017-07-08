@@ -9,13 +9,14 @@
     </style>
 
     <style name="MainTitleBarStyle" parent="android:Theme">
-
-        <item name="android:color">#ff009688</item>
+        <item name="android:windowTitleSize">60dip</item>
+        <item name="android:windowTitleBackgroundStyle">@drawable/bg</item>
     </style>
 
 
     <style name="ChatTitleBarStyle" parent="android:Theme">
         <item name="android:windowTitleSize">50dip</item>
+        <item name="android:windowTitleBackgroundStyle">@drawable/bg</item>
     </style>
 
 </resources>

@@ -318,5 +318,4 @@ public class EmojiUtil {
         comment.setText(sb);
     }
 
-
 }
