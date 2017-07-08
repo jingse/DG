@@ -15,11 +15,14 @@
         android:layout_gravity="center_vertical">
 
         <com.example.guihuan.chatwifitest.utils.CircleImageView
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="2dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/headmine"/>
+            android:src="@drawable/headmine"/>
 
         <TextView
             android:text="@string/my_name"

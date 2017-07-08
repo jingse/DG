@@ -30,7 +30,7 @@
 
         <ImageButton
             android:id="@+id/send"
-            android:layout_margin="12dp"
+            android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -44,7 +44,7 @@
         android:background="#FFFFFF">
 
         <ImageButton
-            android:layout_margin="14dp"
+            android:layout_margin="16dp"
             android:layout_weight="1"
             android:padding="5dp"
             android:id="@+id/recordSound"
@@ -53,7 +53,7 @@
             android:background="@drawable/record"/>
 
         <ImageButton
-            android:layout_margin="14dp"
+            android:layout_margin="16dp"
             android:layout_weight="1"
             android:padding="5dp"
             android:id="@+id/showPicture"
@@ -62,7 +62,7 @@
             android:background="@drawable/picture"/>
 
         <ImageButton
-            android:layout_margin="14dp"
+            android:layout_margin="16dp"
             android:layout_weight="1"
             android:padding="5dp"
             android:id="@+id/showCamera"
@@ -71,7 +71,7 @@
             android:background="@drawable/camera"/>
 
         <ImageButton
-            android:layout_margin="14dp"
+            android:layout_margin="16dp"
             android:layout_weight="1"
             android:padding="5dp"
             android:id="@+id/showVideo"
@@ -80,7 +80,7 @@
             android:background="@drawable/video"/>
 
         <ImageButton
-            android:layout_margin="14dp"
+            android:layout_margin="16dp"
             android:layout_weight="1"
             android:padding="5dp"
             android:id="@+id/showFile"
@@ -89,7 +89,7 @@
             android:background="@drawable/folder"/>
 
         <ImageButton
-            android:layout_margin="14dp"
+            android:layout_margin="16dp"
             android:layout_weight="1"
             android:padding="5dp"
             android:id="@+id/showEmoji"

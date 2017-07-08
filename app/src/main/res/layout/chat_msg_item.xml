@@ -15,7 +15,7 @@
             android:id="@+id/chatting_person_head"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/head1"/>
+            android:src="@drawable/head1"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
             <com.example.guihuan.chatwifitest.utils.CircleImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/headmine"/>
+                android:src="@drawable/headmine"/>
 
         </LinearLayout>
     </LinearLayout>
