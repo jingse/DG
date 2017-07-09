@@ -35,4 +35,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/badgeview.jar')
     compile project(path: ':ptr-lib')
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
 }
