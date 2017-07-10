@@ -4,6 +4,14 @@
         "source": "E:\\Codes\\AndroidWorkSpace\\ChatWifiTest\\ptr-lib\\build\\intermediates\\bundles\\debug\\res\\layout\\cube_ptr_classic_default_header.xml"
     },
     {
+        "merged": "E:\\Android\\DG\\ptr-lib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\cube_ptr_simple_loading.xml",
+        "source": "E:\\Android\\DG\\ptr-lib\\build\\intermediates\\bundles\\debug\\res\\layout\\cube_ptr_simple_loading.xml"
+    },
+    {
+        "merged": "E:\\Android\\DG\\ptr-lib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\cube_ptr_classic_default_header.xml",
+        "source": "E:\\Android\\DG\\ptr-lib\\build\\intermediates\\bundles\\debug\\res\\layout\\cube_ptr_classic_default_header.xml"
+    },
+    {
         "merged": "E:\\Codes\\AndroidWorkSpace\\ChatWifiTest\\ptr-lib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\cube_ptr_simple_loading.xml",
         "source": "E:\\Codes\\AndroidWorkSpace\\ChatWifiTest\\ptr-lib\\build\\intermediates\\bundles\\debug\\res\\layout\\cube_ptr_simple_loading.xml"
     }

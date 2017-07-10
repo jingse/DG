@@ -109,9 +109,9 @@ public class MainActivity extends FragmentActivity {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int screenW = dm.widthPixels;// 获取分辨率宽度
-        offset = screenW / 4 - bmpW * 6;// 计算偏移量
+        offset = screenW / 2;// 计算偏移量
         Matrix matrix = new Matrix();
-        matrix.postTranslate(offset, 0);
+        matrix.postTranslate(0, 0);
         imageView.setImageMatrix(matrix);// 设置动画初始位置
     }
 
@@ -141,8 +141,7 @@ public class MainActivity extends FragmentActivity {
         }
 
         public void onPageSelected(int arg0) {
-            int one = offset * 2 - bmpW / 2 * 3;// 页卡1 -> 页卡2 偏移量
-            Animation animation = new TranslateAnimation(one * currIndex, one * arg0, 0, 0);
+            Animation animation = new TranslateAnimation(offset * currIndex, offset * arg0, 0, 0);
             currIndex = arg0;
             animation.setFillAfter(true);// True:图片停在动画结束位置
             animation.setDuration(300);
