@@ -18,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/buddy_listview_child_avatar"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="10dp"
         android:text="昵称"/>
     <TextView
         android:id="@+id/buddy_listview_child_state"
@@ -27,6 +27,6 @@
         android:text="状态"
         android:layout_toRightOf="@+id/buddy_listview_child_avatar"
         android:layout_below="@+id/buddy_listview_child_nick"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="8dp"/>
 </RelativeLayout>

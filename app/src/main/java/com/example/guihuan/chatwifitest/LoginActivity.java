@@ -74,7 +74,7 @@ public class LoginActivity extends Activity {
         name = editName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             editName.setError(getString(R.string.error_name_required));
-            editPassword.requestFocus();
+            editName.requestFocus();
             return false;
         }
         return !(name == null || name.isEmpty());
