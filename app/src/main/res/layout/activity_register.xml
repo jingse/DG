@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".RegisterActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/icon_name_register"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_centerVertical="true"
+                    android:tint="@color/green"
+                    android:src="@drawable/ic_person"
+                    />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_name"
+                    android:imeOptions="actionNext"
+                    android:layout_toRightOf="@id/icon_name_register"
+                    android:completionThreshold="1"
+                    android:maxLength="40"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    app:met_textColorHint="@color/dark_grey"
+                    app:met_underlineColor="@color/green"
+                    app:met_primaryColor="@color/colorAccent"
+                    app:met_floatingLabelText="@string/prompt_name"
+                    app:met_floatingLabel="highlight"
+                    app:met_clearButton="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_alignBottom="@+id/icon_name_login"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/icon_password_register"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:tint="@color/green"
+                    android:src="@drawable/ic_key"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/icon_password_register">
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edit_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:layout_centerVertical="true"
+                    app:met_textColorHint="@color/dark_grey"
+                    app:met_underlineColor="@color/dark_grey"
+                    android:hint="@string/prompt_password"
+                    android:singleLine="true"
+                    app:met_primaryColor="@color/colorAccent"
+                    app:met_floatingLabelText="@string/prompt_password"
+                    app:met_floatingLabel="highlight"
+                    app:met_clearButton="true"
+                    android:maxLength="20"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_marginBottom="16dp"/>
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edit_repassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:layout_alignLeft="@+id/edit_password"
+                    android:layout_marginBottom="16dp"
+                    android:layout_below="@+id/edit_password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:layout_centerVertical="true"
+                    app:met_textColorHint="@color/dark_grey"
+                    app:met_underlineColor="@color/dark_grey"
+                    android:hint="@string/prompt_reconfirm_password"
+                    android:singleLine="true"
+                    app:met_primaryColor="@color/colorAccent"
+                    app:met_floatingLabelText="@string/prompt_reconfirm_password"
+                    app:met_floatingLabel="highlight"
+                    app:met_clearButton="true"
+                    android:maxLength="20"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
+
+            </LinearLayout>
+            </RelativeLayout>
+
+
+            <Button
+                android:id="@+id/btn_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/action_register"
+                android:textSize="20sp"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
