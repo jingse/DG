@@ -69,6 +69,14 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
     private Boolean isShowRecord;
     private Boolean isShowEmoji;
 
+
+    private String targetURI;
+    private String targetName;
+    private String myName;
+    private String latestMsg;
+    private String latestMsgTime;
+
+
     //自定义变量
     public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
@@ -80,14 +88,14 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 4:
-                    TransferMsg transferMsg = (TransferMsg) msg.obj;
+                    /*TransferMsg transferMsg = (TransferMsg) msg.obj;
                     if (transferMsg.getTo().contains("All")) {
                         //群聊信息
                         //dealPublic(transferMsg.getFrom(),transferMsg.getContent());
                     } else {
                         //私聊信息
                         //dealPrivate(transferMsg.getFrom(),transferMsg.getContent());
-                    }
+                    }*/
                     break;
                 case 9://定位聊天信息为最后一条
                     chatMsgListView.setSelection(chatMsgList.size()); // 将ListView定位到最后一行
@@ -463,6 +471,39 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         }
 
     }
+
+
+
+    void updateMsgUI(String message, int type){
+        ChatMsg msg = new ChatMsg(message, type);
+        chatMsgList.add(msg);
+        adapter.notifyDataSetChanged();                   // 当有新消息时，刷新ListView中的显示
+        chatMsgListView.setSelection(chatMsgList.size()); // 将ListView定位到最后一行
+    }
+
+
+    void dealPublic(String from,String content){
+        if(targetName.equals("All")){
+            /*展示群聊信息*/
+            if(!from.equals(myName))
+                updateMsgUI("["+from+"]"+content, ChatMsg.TYPE_RECEIVED);
+        }
+        else{
+            //DeviceImpl.getInstance().getReCallMsgList().add(from+"#502750694#"+content);
+        }
+    }
+
+
+    void dealPrivate(String from,String content){
+        if(from.equals(targetURI)){
+            /*展示私聊信息*/
+            updateMsgUI(content, ChatMsg.TYPE_RECEIVED);
+        }
+        else{
+           // DeviceImpl.getInstance().getReCallMsgList().add(from+"#502750694#"+content);
+        }
+    }
+
 
 }
 
