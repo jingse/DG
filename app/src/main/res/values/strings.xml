@@ -13,4 +13,19 @@
     <string name="title_activity_view_pager_demo">ViewPagerDemo</string>
     <string name="contacts">联系人</string>
     <string name="messages">消息</string>
+
+    <!-- longin -->
+    <string name="action_sign_in">登录</string>
+    <string name="prompt_name">昵称</string>
+    <string name="prompt_password">密码</string>
+    <string name="error_invalid_name">昵称无效</string>
+    <string name="error_password_required">请输入密码</string>
+    <string name="error_name_required">请输入昵称</string>
+    <string name="action_new_user">新用户注册</string>
+
+    <!-- register -->
+    <string name="prompt_reconfirm_password">确认密码</string>
+    <string name="action_register">完成注册</string>
+    <string name="error_repassword_required">请确认密码</string>
+    <string name="error_password_inconstancy">两次输入密码不一致</string>
 </resources>

@@ -4,10 +4,11 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-        <ExpandableListView
+    <ExpandableListView
         android:id="@+id/expandablelistview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:groupIndicator="@drawable/expandablelistview_change"
-        />
+        android:divider="@color/light_grey"
+        android:dividerHeight="2px"
+        android:groupIndicator="@drawable/expandablelistview_change" />
 </LinearLayout>
