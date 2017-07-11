@@ -4,11 +4,14 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <ExpandableListView
-        android:id="@+id/expandablelistview"
+    <com.example.guihuan.chatwifitest.xlistview.XExpandableListView
+        android:id="@+id/expandableListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/light_grey"
-        android:dividerHeight="2px"
-        android:groupIndicator="@drawable/expandablelistview_change" />
+        android:background="@android:color/white"
+        android:cacheColorHint="@android:color/white"
+        android:divider="@null"
+        android:transcriptMode="normal" >
+    </com.example.guihuan.chatwifitest.xlistview.XExpandableListView>
+
 </LinearLayout>

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@+id/RelativeLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_width="fill_parent"
+    android:layout_height="50.0dip"
     android:background="@drawable/bg_item"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
         android:id="@+id/buddy_listview_image"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="12.0dip"
+        android:layout_height="50.0dip"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
+        android:src="@drawable/ic_icon_unfold"
         />
     <TextView
         android:id="@+id/buddy_listview_group_name"

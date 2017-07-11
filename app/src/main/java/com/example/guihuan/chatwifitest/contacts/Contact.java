@@ -6,12 +6,14 @@ public class Contact {
     private int imageId;
 
     private String state;
+    private int group;
 
 
-    public Contact(String name, int imageId, String state) {
+    public Contact(String name, int imageId, String state,int group) {
         this.name = name;
         this.imageId = imageId;
         this.state = state;
+        this.group = group;
     }
 
     public String getName() {
@@ -28,5 +30,8 @@ public class Contact {
 
     public void setState(String state) {
         this.state = state;
+    }
+    public int getGroup(){
+        return group;
     }
 }
