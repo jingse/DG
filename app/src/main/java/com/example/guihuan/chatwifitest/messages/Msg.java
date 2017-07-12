@@ -10,14 +10,6 @@ public class Msg {
     private String latestMsg;
     private String latestMsgTime;
 
-    public Boolean getClicked() {
-        return isClicked;
-    }
-
-    public void setClicked(Boolean clicked) {
-        isClicked = clicked;
-    }
-
     private Boolean isClicked;  // 判断消息是否被点击,据此判断是否小红点
 
 
@@ -46,6 +38,13 @@ public class Msg {
         return latestMsgTime;
     }
 
+    public Boolean getClicked() {
+        return isClicked;
+    }
+
+    public void setClicked(Boolean clicked) {
+        isClicked = clicked;
+    }
 
 
 }

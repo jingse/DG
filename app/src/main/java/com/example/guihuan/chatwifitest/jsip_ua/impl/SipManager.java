@@ -37,6 +37,8 @@ import android.javax.sip.header.ViaHeader;
 import android.javax.sip.message.MessageFactory;
 import android.javax.sip.message.Request;
 import android.javax.sip.message.Response;
+import android.os.Handler;
+import android.os.Message;
 
 import com.example.guihuan.chatwifitest.jsip_ua.ISipEventListener;
 import com.example.guihuan.chatwifitest.jsip_ua.ISipManager;
@@ -86,6 +88,17 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 	// could also use dialog.isServer() flag but have found mixed opinions about it)
 	CallDirection direction = CallDirection.NONE;
 	private int remoteRtpPort;
+
+
+	public Handler getmUpdateHandler() {
+		return mUpdateHandler;
+	}
+
+	public void setmUpdateHandler(Handler mUpdateHandler) {
+		this.mUpdateHandler = mUpdateHandler;
+	}
+
+	private Handler mUpdateHandler;
 
 	// Constructors/Initializers
 	public SipManager(SipProfile sipProfile) {
@@ -407,21 +420,61 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 	@Override
 	public void processRequest(RequestEvent evt) {
 		Request req = evt.getRequest();
-//MESSAGE
+        //MESSAGE
 		String method = req.getMethod();
 
-		if("ONLINEFRIENDLIST".equals(method)){
+
+		if(method.equals("FRIENDLIST")){
+			System.out.println("FriendList:"+new String(req.getRawContent()));
+			Message msg = new Message();
+			msg.what = 1;
+			msg.obj = req.getContent();
+			mUpdateHandler.sendMessage(msg);
+			return ;
+		}
+		if(method.equals("ONLINEFRIENDLIST")){
 			System.out.println("OnLinefriendList:"+new String(req.getRawContent()));
+			Message msg = new Message();
+			msg.what = 2;
+			msg.obj = req.getContent();
+			mUpdateHandler.sendMessage(msg);
 			return;
 		}
 		if(method.equals("FRIENDUP")){
 			System.out.println("FRIENDUP:"+new String(req.getRawContent()));
+			Message msg = new Message();
+			msg.what = 3;
+			msg.obj = req.getContent();
+			mUpdateHandler.sendMessage(msg);
 			return ;
 		}
-		if(method.equals("FRIENDLIST")){
-			System.out.println("FriendList:"+new String(req.getRawContent()));
-			return ;
+		//好友下线
+		if(method.equals("FRIENDDOWN")) {
+			System.out.println("FriendDOWN:"+new String(req.getRawContent()));
+			Message msg = new Message();
+			msg.what = 4;
+			msg.obj = req.getContent();
+			mUpdateHandler.sendMessage(msg);
 		}
+
+		//在线消息
+		if(method.equals("MESSAGE")) {
+			System.out.println("message:"+new String(req.getRawContent()));
+			Message msg = new Message();
+			msg.what = 5;
+			msg.obj = req.getContent();
+			mUpdateHandler.sendMessage(msg);
+		}
+
+		//离线消息
+		if(method.equals("DOWNLINEMESSAGE")) {
+			System.out.println("message:"+new String(req.getRawContent()));
+			Message msg = new Message();
+			msg.what = 6;
+			msg.obj = req.getContent();
+			mUpdateHandler.sendMessage(msg);
+		}
+
 		FromHeader from = (FromHeader) req.getHeader("From");
 		System.out.println(from.getAddress().toString()+" : "+ new String(req.getRawContent()));
 		Response response = null;

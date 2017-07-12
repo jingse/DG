@@ -1,6 +1,7 @@
 package com.example.guihuan.chatwifitest.jsip_ua.impl;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.example.guihuan.chatwifitest.jsip_ua.IDevice;
 import com.example.guihuan.chatwifitest.jsip_ua.NotInitializedException;
@@ -17,6 +18,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 
 // ISSUE#17: commented those, as we need to decouple the UI details
 //import org.mobicents.restcomm.android.sdk.ui.IncomingCall;
@@ -25,14 +27,39 @@ import java.util.HashMap;
 public class DeviceImpl implements IDevice,Serializable {
 	private static DeviceImpl device;
 
+
+
+
+	private Handler chatHandler;
+
 	Context context;
 	SipManager 	 sipManager;
+
+	public SipProfile getSipProfile() {
+		return sipProfile;
+	}
+
+	public void setSipProfile(SipProfile sipProfile) {
+		this.sipProfile = sipProfile;
+	}
+
 	SipProfile 	 sipProfile;
 	SoundManager soundManager;
 
 	boolean isInitialized;
 	public SipUADeviceListener sipuaDeviceListener = null;
 	public SipUAConnectionListener sipuaConnectionListener = null;
+
+	public List<String> getReCallMsgList() {
+		return reCallMsgList;
+	}
+
+	public void setReCallMsgList(List<String> reCallMsgList) {
+		this.reCallMsgList = reCallMsgList;
+	}
+
+	private List<String> reCallMsgList;//回传给list的消息信息
+
 
 	private DeviceImpl(){
 		
@@ -43,6 +70,18 @@ public class DeviceImpl implements IDevice,Serializable {
 		}
 		return device;
 	}
+
+	public Handler getChatHandler() {
+		return chatHandler;
+	}
+
+	public void setChatHandler(Handler chatHandler) {
+		this.chatHandler = chatHandler;
+		sipManager.setmUpdateHandler(this.chatHandler);
+	}
+
+
+
     public void Initialize(Context context, SipProfile sipProfile, HashMap<String,String> customHeaders){
         this.Initialize(context,sipProfile);
         sipManager.setCustomHeaders(customHeaders);

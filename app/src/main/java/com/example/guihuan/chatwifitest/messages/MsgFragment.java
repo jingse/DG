@@ -75,8 +75,8 @@ public class MsgFragment extends Fragment {
         /**
          * Material Design风格的头部实现
          */
-        // final MaterialHeader header = new MaterialHeader(this);
-        //header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, 0);//显示相关工具类，用于获取用户屏幕宽度、高度以及屏幕密度。同时提供了dp和px的转化方法。
+        /*final MaterialHeader header = new MaterialHeader(getContext());
+        header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, 0);//显示相关工具类，用于获取用户屏幕宽度、高度以及屏幕密度。同时提供了dp和px的转化方法。*/
 
 
         /**
@@ -109,6 +109,9 @@ public class MsgFragment extends Fragment {
                     @Override
                     public void run() {
                         mPtrFrame.refreshComplete();
+
+
+
                         //mPtrFrame.autoRefresh();//自动刷新
                     }
                 }, 1800);
@@ -147,7 +150,6 @@ public class MsgFragment extends Fragment {
                 int imageId = msg.getImageId();
                 bundle.putString("chatting_friend_name", msg.getName()); //将朋友名称传进去
                 bundle.putInt("chatting_friend_head", imageId); //将朋友头像传进去
-                //Toast.makeText(getContext(), msg.getImageId(), Toast.LENGTH_SHORT).show();
                 intent.setClass(getContext(), ChatActivity.class);
                 intent.putExtras(bundle);
 
@@ -162,11 +164,6 @@ public class MsgFragment extends Fragment {
 
             }
         });
-
-
-
-
-
 
         return view;
     }

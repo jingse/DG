@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.guihuan.chatwifitest.jsip_ua.SipProfile;
-import com.example.guihuan.chatwifitest.jsip_ua.Var;
 import com.example.guihuan.chatwifitest.jsip_ua.impl.DeviceImpl;
 
 import java.util.HashMap;

@@ -22,7 +22,7 @@ import android.javax.sip.header.ViaHeader;
 import android.javax.sip.message.MessageFactory;
 import android.javax.sip.message.Request;
 
-import com.example.guihuan.chatwifitest.jsip_ua.Var;
+import com.example.guihuan.chatwifitest.Var;
 import com.example.guihuan.chatwifitest.jsip_ua.impl.SipManager;
 
 import java.text.ParseException;
