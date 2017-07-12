@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import com.example.guihuan.chatwifitest.R;
 
-/**
- * Created by GuiHuan on 2017/7/6.
- */
 
 public class BuddyAdapter extends BaseExpandableListAdapter {
 

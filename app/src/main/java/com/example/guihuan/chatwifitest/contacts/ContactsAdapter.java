@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.guihuan.chatwifitest.R;
+import com.example.guihuan.chatwifitest.chat.ChatActivity;
 
 import java.util.List;
 import java.util.Map;
@@ -62,21 +63,20 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
         vHolder.nickTextView.setText(contact.getName());
         vHolder.headPortrait.setImageResource(contact.getImageId());
         vHolder.stateTextView.setText(contact.getState());
-        /*convertView.setOnClickListener(new android.view.View.OnClickListener() {
+        convertView.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //todo:每一项单击事件
                 Intent intent = new Intent();
-                intent.setClass(mContext, OtherActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt("headImage", u.getHeadIcon());
-                bundle.putString("userName", u.getNick());
+                int imageId = contact.getImageId();
+                bundle.putString("chatting_friend_name", contact.getName()); //将朋友名称传进去
+                bundle.putInt("chatting_friend_head", imageId); //将朋友头像传进去
+                intent.setClass(context, ChatActivity.class);
                 intent.putExtras(bundle);
-                mContext.startActivity(intent);
+                context.startActivity(intent);
             }
         });
-        */
+
         return convertView;
     }
 
