@@ -1,8 +1,6 @@
 package com.example.guihuan.chatwifitest;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.guihuan.chatwifitest.jsip_ua.SipProfile;
+import com.example.guihuan.chatwifitest.jsip_ua.Var;
+import com.example.guihuan.chatwifitest.jsip_ua.impl.DeviceImpl;
+
+import java.util.HashMap;
+
 
 public class LoginActivity extends Activity {
     private EditText editName;
@@ -22,12 +26,22 @@ public class LoginActivity extends Activity {
     private TextView btnNewUser;
     private String name;
     private String password;
-
+    public String serverSip="sip:Server@10.128.253.106:6666";
+    SipProfile sipProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
+
+        sipProfile = new SipProfile();
+        HashMap<String, String> customHeaders = new HashMap<>();
+        customHeaders.put("customHeader1","customValue1");
+        customHeaders.put("customHeader2","customValue2");
+
+        DeviceImpl.getInstance().Initialize(getApplicationContext(), sipProfile,customHeaders);
+
+
         editName = (EditText) findViewById(R.id.edit_name);
         editPassword = (EditText) findViewById(R.id.edit_password);
         btnLogin = (Button) findViewById(R.id.btn_login);
@@ -56,7 +70,9 @@ public class LoginActivity extends Activity {
         });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                attemptLogin();
+
+                DeviceImpl.getInstance().SendMessage(Var.serverSip,editName.getText().toString()+"&"+editPassword.getText().toString(),"INVITE");
+                // attemptLogin();
             }
         });
         btnNewUser.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +80,9 @@ public class LoginActivity extends Activity {
                 startActivity(new Intent(getApplication(), RegisterActivity.class));
             }
         });
+
+
+
     }
 
     private boolean checkName() {
