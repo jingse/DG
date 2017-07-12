@@ -39,7 +39,10 @@ import android.javax.sip.message.Request;
 import android.javax.sip.message.Response;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 
+import com.example.guihuan.chatwifitest.R;
+import com.example.guihuan.chatwifitest.Var;
 import com.example.guihuan.chatwifitest.jsip_ua.ISipEventListener;
 import com.example.guihuan.chatwifitest.jsip_ua.ISipManager;
 import com.example.guihuan.chatwifitest.jsip_ua.NotInitializedException;
@@ -427,7 +430,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("FRIENDLIST")){
 			System.out.println("FriendList:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = 1;
+			msg.what = Var.FriendList;
 			msg.obj = req.getContent();
 			mUpdateHandler.sendMessage(msg);
 			return ;
@@ -435,7 +438,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("ONLINEFRIENDLIST")){
 			System.out.println("OnLinefriendList:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = 2;
+			msg.what = Var.OnlineFriendList;
 			msg.obj = req.getContent();
 			mUpdateHandler.sendMessage(msg);
 			return;
@@ -443,7 +446,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("FRIENDUP")){
 			System.out.println("FRIENDUP:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = 3;
+			msg.what = Var.FriendUp;
 			msg.obj = req.getContent();
 			mUpdateHandler.sendMessage(msg);
 			return ;
@@ -452,7 +455,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("FRIENDDOWN")) {
 			System.out.println("FriendDOWN:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = 4;
+			msg.what = Var.FriendDown;
 			msg.obj = req.getContent();
 			mUpdateHandler.sendMessage(msg);
 		}
@@ -470,7 +473,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("DOWNLINEMESSAGE")) {
 			System.out.println("message:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = 6;
+			msg.what = Var.DownlineMessage;
 			msg.obj = req.getContent();
 			mUpdateHandler.sendMessage(msg);
 		}
@@ -504,24 +507,66 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("--receive TRYING!");
 			return;
 		}else if(status==600){
-			System.out.println("REGISTER成功！\n注册成功");
+			//注册成功
+			Message msg = new Message();
+			msg.what = Var.RegisterSuccess;
+			msg.obj = String.valueOf(R.string.register_success);
+			System.out.println((String) msg.obj);
+			mUpdateHandler.sendMessage(msg);
+			return;
 		}else if(status==601){
-			System.out.println("REGISTER失败！\n用户已存在，注册失败！");
+			//用户已存在，注册失败
+			Message msg = new Message();
+			msg.what = Var.UserhasExisted;
+			msg.obj = String.valueOf(R.string.user_has_existed);
+			System.out.println((String) msg.obj);
+			mUpdateHandler.sendMessage(msg);
+			return;
 		}else if(status==602){
-			System.out.println("注册时数据库异常，注册失败！");
+			//服务器异常，注册失败
+			Message msg = new Message();
+			msg.what = Var.ServerError;
+			msg.obj = String.valueOf(R.string.server_error);
+			System.out.println((String) msg.obj);
+			mUpdateHandler.sendMessage(msg);
+			return;
 		}else if(status==610){
-			System.out.println("INVITE失败！\n登录失败：用户不存在！");
+			//登录失败：用户不存在;
+			Message msg = new Message();
+			msg.what = Var.UserNotExist;
+			msg.obj = String.valueOf(R.string.user_not_exist);
+			System.out.println((String) msg.obj);
+			mUpdateHandler.sendMessage(msg);
+			return;
 		}else if(status==611){
-			System.out.println("INVITE失败！\n登录失败：密码不匹配");
+			//登录失败：密码错误
+			Message msg = new Message();
+			msg.what = Var.PasswordIncorrect;
+			msg.obj = String.valueOf(R.string.password_incorrect);
+			System.out.println((String) msg.obj);
+			mUpdateHandler.sendMessage(msg);
+			return;
 		}else if(status==612){
-			System.out.println("INVITE失败！\n登录失败：用户已经登录！！");
+			//登录失败：用户已经登录
+			Message msg = new Message();
+			msg.what = Var.UserHasLogined;
+			msg.obj = String.valueOf(R.string.user_has_logined);
+			System.out.println((String) msg.obj);
+			mUpdateHandler.sendMessage(msg);
+			return;
 		}else if(status==613){
-			System.out.println("INVITE成功！\n登录成功");
+			//登录成功
+			Message msg = new Message();
+			msg.what = Var.LoginSuccess;
+			msg.obj = String.valueOf(R.string.login_success);
+			System.out.println((String) msg.obj);
+			mUpdateHandler.sendMessage(msg);
 			try {
-			//	SendMessage(Var.serverSip, "", "ACK");
+				SendMessage(Var.serverSip, "", "ACK");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			return;
 		}else if(status==688){
 			System.out.println("成功下线");
 		}
