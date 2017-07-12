@@ -10,10 +10,14 @@ public class ChatMsg {
     private String content;
     private int type;
 
+    private int friendImageId;
 
-    public ChatMsg(String content, int type) {
+
+
+    public ChatMsg(String content, int type, int friendImageId) {
         this.content = content;
         this.type = type;
+        this.friendImageId = friendImageId;
     }
 
     public String getContent() {
@@ -24,6 +28,13 @@ public class ChatMsg {
         return type;
     }
 
+    public int getFriendImageId() {
+        return friendImageId;
+    }
+
+    public void setFriendImageId(int friendImageId) {
+        this.friendImageId = friendImageId;
+    }
 
 
 }

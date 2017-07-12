@@ -28,6 +28,8 @@ public class MsgFragment extends Fragment {
 
     private List<Msg> msgList = new ArrayList<>();
     private MsgAdapter adapter;
+    private int actionSwitch;//用来切换对list的相应事件
+
 
     private PtrFrameLayout mPtrFrame;
 
@@ -37,6 +39,8 @@ public class MsgFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_msg, container, false);
 
         mPtrFrame = view.findViewById(R.id.ptr);
+
+        actionSwitch = 1;
 
         /**
          * 在 xml 中配置过了，就不要在这里配置了。
@@ -135,16 +139,33 @@ public class MsgFragment extends Fragment {
         listView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Msg msg = msgList.get(position);
-                //Toast.makeText(MainActivity.this, msg.getName(), Toast.LENGTH_SHORT).show();
+                Msg msg = msgList.get(position);
+                msg.setClicked(true);
 
-                //TODO：来消息时，未读的话显示小红点（为指定item）
-                //TODO:点击一个item，未读消息小红点消失
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                int imageId = msg.getImageId();
+                bundle.putString("chatting_friend_name", msg.getName()); //将朋友名称传进去
+                bundle.putInt("chatting_friend_head", imageId); //将朋友头像传进去
+                //Toast.makeText(getContext(), msg.getImageId(), Toast.LENGTH_SHORT).show();
+                intent.setClass(getContext(), ChatActivity.class);
+                intent.putExtras(bundle);
 
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
                 startActivity(intent);
+
+                /*if(actionSwitch == 1) {
+
+                } else if(actionSwitch == 2) {
+
+                }*/
+
+
             }
         });
+
+
+
+
 
 
         return view;
@@ -152,13 +173,13 @@ public class MsgFragment extends Fragment {
 
 
     private void initMessages() {
-        Msg friend1 = new Msg("朋友1", R.drawable.head1, "我在南锣鼓巷", "10:00");
+        Msg friend1 = new Msg("朋友1", R.drawable.head1, "我在南锣鼓巷", "10:00", false);
         msgList.add(friend1);
-        Msg friend2 = new Msg("朋友2", R.drawable.head2, "你好", "刚刚");
+        Msg friend2 = new Msg("朋友2", R.drawable.head2, "你好", "刚刚", false);
         msgList.add(friend2);
-        Msg friend3 = new Msg("朋友3", R.drawable.head3, "再见咯", "昨天");
+        Msg friend3 = new Msg("朋友3", R.drawable.head3, "再见咯", "昨天", false);
         msgList.add(friend3);
-        Msg friend4 = new Msg("朋友4", R.drawable.head4, "吃了么？", "12:23");
+        Msg friend4 = new Msg("朋友4", R.drawable.head4, "吃了么？", "12:23", false);
         msgList.add(friend4);
 
     }

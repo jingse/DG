@@ -37,7 +37,6 @@ import com.example.guihuan.chatwifitest.R;
 import com.example.guihuan.chatwifitest.emoji.Emoji;
 import com.example.guihuan.chatwifitest.emoji.EmojiUtil;
 import com.example.guihuan.chatwifitest.emoji.FaceFragment;
-import com.example.guihuan.chatwifitest.utils.CircleImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,13 +62,12 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
     private ImageButton backToMain;
     private FrameLayout container;
 
-    private CircleImageView chatting_person_head;
-    private TextView chatting_person_name;
 
     private Boolean isShowRecord;
     private Boolean isShowEmoji;
 
 
+    private int friendImageId;
     private String targetURI;
     private String targetName;
     private String myName;
@@ -116,6 +114,16 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         setContentView(R.layout.activity_chatting);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.chat_title_bar); // 注意顺序
 
+        //DeviceImpl.getInstance().setDeviceHandler(chatHandler);
+
+        Intent intent = this.getIntent();
+        final String friend_name = intent.getExtras().getString("chatting_friend_name");
+        friendImageId = intent.getExtras().getInt("chatting_friend_head");
+
+        // 将标题栏的用户名设为正在聊天的人的用户名
+        TextView chat_friend_name = findViewById(R.id.chat_title_name);
+        chat_friend_name.setText(friend_name);
+
         initChatMsgs();
 
         adapter = new ChatMsgAdapter(ChatActivity.this, R.layout.chat_msg_item, chatMsgList);
@@ -123,15 +131,10 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         chatMsgListView.setAdapter(adapter);
 
 
-        chatting_person_head = findViewById(R.id.chatting_person_head);
-        chatting_person_name = findViewById(R.id.chatting_person_name);
-
-
         backToMain = findViewById(R.id.chatBackToMain);
 
         inputText = findViewById(R.id.input_text);
         send = findViewById(R.id.send);
-
         inputText.setMovementMethod(LinkMovementMethod.getInstance());
 
         recordSound = findViewById(R.id.recordSound);
@@ -171,7 +174,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             public void onClick(View v) {
                 String content = inputText.getText().toString();
                 if (!"".equals(content)) {
-                    ChatMsg chatMsg = new ChatMsg(content, ChatMsg.TYPE_SENT);
+                    ChatMsg chatMsg = new ChatMsg(content, ChatMsg.TYPE_SENT, friendImageId);
                     chatMsgList.add(chatMsg);
                     adapter.notifyDataSetChanged();
                     container.setVisibility(View.GONE);
@@ -288,11 +291,11 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
 
     private void initChatMsgs() {
-        ChatMsg chatMsg1 = new ChatMsg("Hello guy.", ChatMsg.TYPE_RECEIVED);
+        ChatMsg chatMsg1 = new ChatMsg("Hello guy.", ChatMsg.TYPE_RECEIVED, friendImageId);
         chatMsgList.add(chatMsg1);
-        ChatMsg chatMsg2 = new ChatMsg("Hello. Who is that?", ChatMsg.TYPE_SENT);
+        ChatMsg chatMsg2 = new ChatMsg("Hello. Who is that?", ChatMsg.TYPE_SENT, friendImageId);
         chatMsgList.add(chatMsg2);
-        ChatMsg chatMsg3 = new ChatMsg("This is Tom. Nice talking to you. ", ChatMsg.TYPE_RECEIVED);
+        ChatMsg chatMsg3 = new ChatMsg("This is Tom. Nice talking to you. ", ChatMsg.TYPE_RECEIVED, friendImageId);
         chatMsgList.add(chatMsg3);
     }
 
@@ -475,7 +478,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
 
     void updateMsgUI(String message, int type){
-        ChatMsg msg = new ChatMsg(message, type);
+        ChatMsg msg = new ChatMsg(message, type, friendImageId);
         chatMsgList.add(msg);
         adapter.notifyDataSetChanged();                   // 当有新消息时，刷新ListView中的显示
         chatMsgListView.setSelection(chatMsgList.size()); // 将ListView定位到最后一行

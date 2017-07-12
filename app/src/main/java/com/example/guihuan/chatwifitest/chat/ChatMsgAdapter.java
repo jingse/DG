@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.guihuan.chatwifitest.R;
 import com.example.guihuan.chatwifitest.emoji.EmojiUtil;
+import com.example.guihuan.chatwifitest.utils.CircleImageView;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,6 +37,7 @@ public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
             viewHolder.rightLayout = view.findViewById(R.id.right_layout);
             viewHolder.leftMsg = view.findViewById(R.id.left_msg);
             viewHolder.rightMsg = view.findViewById(R.id.right_msg);
+            viewHolder.friendImage = view.findViewById(R.id.chatting_person_head);
             view.setTag(viewHolder);
         } else {
             view = convertView;
@@ -54,6 +56,7 @@ public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
             viewHolder.rightMsg.setText(chatMsg.getContent());
             displayTextView(viewHolder.rightMsg);
         }
+        viewHolder.friendImage.setImageResource(chatMsg.getFriendImageId());
         return view;
     }
 
@@ -70,12 +73,10 @@ public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
     class ViewHolder {
 
         LinearLayout leftLayout;
-
         LinearLayout rightLayout;
-
         TextView leftMsg;
-
         TextView rightMsg;
+        CircleImageView friendImage;
 
     }
 

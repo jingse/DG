@@ -10,12 +10,24 @@ public class Msg {
     private String latestMsg;
     private String latestMsgTime;
 
+    public Boolean getClicked() {
+        return isClicked;
+    }
 
-    public Msg(String name, int imageId, String latestMsg, String latestMsgTime) {
+    public void setClicked(Boolean clicked) {
+        isClicked = clicked;
+    }
+
+    private Boolean isClicked;  // 判断消息是否被点击,据此判断是否小红点
+
+
+
+    public Msg(String name, int imageId, String latestMsg, String latestMsgTime, Boolean isClicked) {
         this.name = name;
         this.imageId = imageId;
         this.latestMsg = latestMsg;
         this.latestMsgTime = latestMsgTime;
+        this.isClicked = isClicked;
     }
 
     public String getName() {
@@ -33,6 +45,7 @@ public class Msg {
     public String getLatestMsgTime() {
         return latestMsgTime;
     }
+
 
 
 }

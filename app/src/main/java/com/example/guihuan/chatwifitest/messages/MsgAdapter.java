@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.guihuan.chatwifitest.R;
-import com.jauker.widget.BadgeView;
 
 import java.util.List;
 
@@ -45,16 +44,6 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         viewHolder.friendName.setText(msg.getName());
         viewHolder.latestMsg.setText(msg.getLatestMsg());
         viewHolder.latestMsgTime.setText(msg.getLatestMsgTime());
-
-
-        BadgeView badgeView = new BadgeView(getContext());
-        //btn是控件
-        badgeView.setTargetView(viewHolder.latestMsgTime);
-        //设置相对位置 setBadgeMargin(int leftDipMargin, int topDipMargin, int rightDipMargin, int bottomDipMargin)
-        badgeView.setBadgeMargin(5, 20, 0, 0);
-        //设置显示未读消息条数
-        badgeView.setBadgeCount(2);
-
 
         return view;
     }

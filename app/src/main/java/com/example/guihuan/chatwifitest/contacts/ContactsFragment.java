@@ -1,19 +1,14 @@
 package com.example.guihuan.chatwifitest.contacts;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.example.guihuan.chatwifitest.R;
-import com.example.guihuan.chatwifitest.chat.ChatActivity;
 import com.example.guihuan.chatwifitest.xlistview.XExpandableListView;
 
 import java.util.ArrayList;
@@ -127,8 +122,7 @@ public class ContactsFragment extends Fragment {
         mxListView.setAdapter(mAdapter);
     }
 
-    public static  int[] heads = { R.drawable.head1, R.drawable.head2,
-            R.drawable.head3, R.drawable.head4};
+    public static  int[] heads = { R.drawable.head1, R.drawable.head2, R.drawable.head3, R.drawable.head4};
 
     public static String[] nameArray = new String[21];
 

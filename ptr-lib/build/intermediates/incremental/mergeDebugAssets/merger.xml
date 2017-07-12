@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="E:\Android\DG\ptr-lib\assets"/><source path="E:\Android\DG\ptr-lib\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="E:\Android\DG\ptr-lib\src\debug\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="E:\Codes\AndroidWorkSpace\ChatWifiTest\ptr-lib\assets"/><source path="E:\Codes\AndroidWorkSpace\ChatWifiTest\ptr-lib\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="E:\Codes\AndroidWorkSpace\ChatWifiTest\ptr-lib\src\debug\assets"/></dataSet></merger>
