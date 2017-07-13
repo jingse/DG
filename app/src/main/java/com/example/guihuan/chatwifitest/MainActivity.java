@@ -204,7 +204,7 @@ public class MainActivity extends FragmentActivity {
                                         intent.setClass(MainActivity.this, LoginActivity.class);
                                         startActivity(intent);
                                         //TODO:把消息发出去
-                                        DeviceImpl.getInstance().SendMessage(myName, serverSip, "GoodBye");
+                                        DeviceImpl.getInstance().SendMessage(serverSip, myName, "GOODBYE");
 
                                     }
                                     //more_btn.setText(strItem);
