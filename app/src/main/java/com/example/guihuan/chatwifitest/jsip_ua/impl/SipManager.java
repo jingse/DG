@@ -437,7 +437,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("FriendList:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 1;
-			msg.obj = req.getContent();
+			msg.obj = String.valueOf(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 			return ;
 		}
@@ -445,7 +445,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("OnLinefriendList:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 2;
-			msg.obj = req.getContent();
+			msg.obj = String.valueOf(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 			return;
 		}
@@ -453,7 +453,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("FRIENDUP:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 3;
-			msg.obj = req.getContent();
+			msg.obj = String.valueOf(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 			return ;
 		}
@@ -462,7 +462,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("FriendDOWN:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 4;
-			msg.obj = req.getContent();
+			msg.obj = String.valueOf(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 		}
 
@@ -471,7 +471,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("message:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 5;
-			msg.obj = req.getContent();
+			msg.obj = String.valueOf(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 		}
 
@@ -481,7 +481,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
             Log.d("在线消息", new String(req.getRawContent()));
             Message msg = new Message();
 			msg.what = 6;
-			msg.obj = req.getContent();
+			msg.obj = String.valueOf(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 		}
 
