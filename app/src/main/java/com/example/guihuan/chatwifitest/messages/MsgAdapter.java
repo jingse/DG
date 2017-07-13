@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.guihuan.chatwifitest.R;
@@ -17,12 +18,18 @@ import java.util.List;
 public class MsgAdapter extends ArrayAdapter<Msg> {
 
     private int resourceId;
+    private List<Msg> msgList;
 
-    public MsgAdapter(Context context, int textViewResourceId,
-                        List<Msg> objects) {
-        super(context, textViewResourceId, objects);
+    public MsgAdapter(Context context, int textViewResourceId, List<Msg> objects) {
+       super(context, textViewResourceId, objects);
+        //super();
         resourceId = textViewResourceId;
+        this.msgList = objects;
     }
+
+
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -63,6 +70,32 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
 
         return view;
     }
+
+
+    public void updataView(String latestMsg, String latestMsgTime, int posi, ListView listView) {
+        int visibleFirstPosi = listView.getFirstVisiblePosition();
+        int visibleLastPosi = listView.getLastVisiblePosition();
+        if (posi >= visibleFirstPosi && posi <= visibleLastPosi) {
+            View view = listView.getChildAt(posi - visibleFirstPosi);
+            ViewHolder holder = (ViewHolder) view.getTag();
+
+            //String txt = holder.strText.getText().toString();
+            //txt = txt + "++;";
+            Msg msg = msgList.get(posi);
+            msg.setLatestMsg(latestMsg);
+            msg.setLatestMsgTime(latestMsgTime);
+            holder.latestMsg.setText(latestMsg);
+            holder.latestMsgTime.setText(latestMsgTime);
+            msgList.set(posi, msg);
+        } else {
+            Msg msg = msgList.get(posi);
+            msg.setLatestMsg(latestMsg);
+            msg.setLatestMsgTime(latestMsgTime);
+            msgList.set(posi, msg);
+        }
+    }
+
+
 
     class ViewHolder {
 

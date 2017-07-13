@@ -22,11 +22,14 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.util.PtrLocalDisplay;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class MsgFragment extends Fragment {
 
 
     private List<Msg> msgList = new ArrayList<>();
+    private ListView listView;
     private MsgAdapter adapter;
     private int actionSwitch;//用来切换对list的相应事件
 
@@ -134,7 +137,7 @@ public class MsgFragment extends Fragment {
 
 
         adapter = new MsgAdapter(getContext(), R.layout.msg_item, msgList);
-        ListView listView = view.findViewById(R.id.list_view);
+        listView = view.findViewById(R.id.list_view);
         listView.setAdapter(adapter);
 
         initMessages();
@@ -166,6 +169,55 @@ public class MsgFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    //结果处理函数，当从secondActivity中返回时调用此函数
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==0 && resultCode==RESULT_OK){
+            Bundle bundle = data.getExtras();
+            String friendName =null;
+            String latestMsg = null;
+            String latestMsgTime = null;
+            if(bundle!=null) {
+                friendName = bundle.getString("friendName");
+                latestMsg = bundle.getString("latestMsg");
+                latestMsgTime = bundle.getString("latestMsgTime");
+            }
+
+            int pos = 0;
+            for(int i = 0; i < msgList.size(); i++) {
+                Msg temp = msgList.get(i);
+                if(temp.getName().equals(friendName)) {
+                    pos = i;
+                    temp.setLatestMsg(latestMsg);
+                    temp.setLatestMsgTime(latestMsgTime);
+                }
+            }
+            adapter.updataView(latestMsg, latestMsgTime, pos, listView);
+//            adapter.clear();
+//            List<Msg> newMsgList = new ArrayList<>();
+//            for(int i = 0; i < msgList.size(); i++) {
+//                Msg friend1 = new Msg("1", R.drawable.head1, "我在南锣鼓巷", "10:00", false);
+//                newMsgList.add(friend1);
+//                Msg friend2 = new Msg("2", R.drawable.head2, "你好", "刚刚", false);
+//                newMsgList.add(friend2);
+//                Msg friend3 = new Msg("3", R.drawable.head3, "再见咯", "昨天", false);
+//                newMsgList.add(friend3);
+//                Msg friend4 = new Msg("4", R.drawable.head4, "吃了么？", "12:23", false);
+//                newMsgList.add(friend4);
+//                Msg group1 = new Msg("群", R.drawable.headgroup, "大家好", "13:30", false);
+//                newMsgList.add(group1);
+//            }
+
+
+           // adapter.notifyDataSetChanged();
+
+            //Log.d("text",text);
+            //editText.setText(text);
+        }
     }
 
 

@@ -95,7 +95,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
                 // 在线消息
                 case Var.Message:
-                    
+
                     String data = String.valueOf(msg.obj);
                     Log.d("TAG", "消息: data is " + data);
 
@@ -223,7 +223,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                     /*用handler异步刷新listview*/
                     Message message1 = new Message();
                     message1.what = Var.Message;
-//                    chatHandler.sendMessage(message1);
+                    chatHandler.sendMessage(message1);
                     inputText.setText(""); // 清空输入框中的内容
 
 
@@ -245,6 +245,15 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             @Override
             public void onClick(View v) {
                 Toast.makeText(ChatActivity.this, "back", Toast.LENGTH_SHORT).show();
+
+                Intent intent = getIntent();
+                Bundle bundle =new Bundle();
+                bundle.putString("friendName", friendName);
+                bundle.putString("latestMsg",latestMsg);
+                bundle.putString("latestMsgTime", latestMsgTime);
+                intent.putExtras(bundle);
+                setResult(RESULT_OK,intent);
+
                 finish();
             }
         });

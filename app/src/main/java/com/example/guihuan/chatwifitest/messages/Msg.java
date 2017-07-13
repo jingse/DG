@@ -7,6 +7,14 @@ public class Msg {
     private String name;
     private int imageId;
 
+    public void setLatestMsg(String latestMsg) {
+        this.latestMsg = latestMsg;
+    }
+
+    public void setLatestMsgTime(String latestMsgTime) {
+        this.latestMsgTime = latestMsgTime;
+    }
+
     private String latestMsg;
     private String latestMsgTime;
 
