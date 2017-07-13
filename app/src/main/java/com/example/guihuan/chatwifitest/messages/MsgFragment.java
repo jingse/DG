@@ -170,13 +170,13 @@ public class MsgFragment extends Fragment {
 
 
     private void initMessages() {
-        Msg friend1 = new Msg("朋友1", R.drawable.head1, "我在南锣鼓巷", "10:00", false);
+        Msg friend1 = new Msg("1", R.drawable.head1, "我在南锣鼓巷", "10:00", false);
         msgList.add(friend1);
-        Msg friend2 = new Msg("朋友2", R.drawable.head2, "你好", "刚刚", false);
+        Msg friend2 = new Msg("2", R.drawable.head2, "你好", "刚刚", false);
         msgList.add(friend2);
-        Msg friend3 = new Msg("朋友3", R.drawable.head3, "再见咯", "昨天", false);
+        Msg friend3 = new Msg("3", R.drawable.head3, "再见咯", "昨天", false);
         msgList.add(friend3);
-        Msg friend4 = new Msg("朋友4", R.drawable.head4, "吃了么？", "12:23", false);
+        Msg friend4 = new Msg("4", R.drawable.head4, "吃了么？", "12:23", false);
         msgList.add(friend4);
 
     }

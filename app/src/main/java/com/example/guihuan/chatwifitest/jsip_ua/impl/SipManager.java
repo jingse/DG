@@ -39,7 +39,7 @@ import android.javax.sip.message.Request;
 import android.javax.sip.message.Response;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
+import android.util.Log;
 
 import com.example.guihuan.chatwifitest.R;
 import com.example.guihuan.chatwifitest.Var;
@@ -112,11 +112,13 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 	private boolean  initializeSipStack()
 	{
 		sipManagerState = SipManagerState.REGISTERING;
-     //	this.sipProfile.setLocalIp(getIPAddress(true));
-		this.sipProfile.setLocalIp("10.28.245.174");
+		this.sipProfile.setLocalIp(Var.host);
 		sipFactory = SipFactory.getInstance();
 		sipFactory.resetFactory();
 		sipFactory.setPathName("android.gov.nist");
+
+
+		System.out.println("-------1--");
 
 		Properties properties = new Properties();
 		properties.setProperty("android.javax.sip.OUTBOUND_PROXY", sipProfile.getRemoteEndpoint()
@@ -127,6 +129,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 				// Binding again
 				sipStack.deleteListeningPoint(udpListeningPoint);
 				sipProvider.removeSipListener(this);
+				System.out.println("-------2--");
 			}
 			sipStack = sipFactory.createSipStack(properties);
 			System.out.println("createSipStack " + sipStack);
@@ -139,10 +142,9 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			headerFactory = sipFactory.createHeaderFactory();
 			addressFactory = sipFactory.createAddressFactory();
 			messageFactory = sipFactory.createMessageFactory();
-			udpListeningPoint = sipStack.createListeningPoint(
-					sipProfile.getLocalIp(), sipProfile.getLocalPort(), sipProfile.getTransport());
 
-            System.out.println("----false3----------------");
+			udpListeningPoint = sipStack.createListeningPoint(
+					Var.host, Var.port, "udp");
 
 			System.out.println(sipProfile.getLocalIp()+"------"+sipProfile.getLocalPort()+"========"+sipProfile.getTransport());
 
@@ -353,17 +355,21 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if (!initializeSipStack())
 			throw new NotInitializedException("Sip Stack not initialized");
 
+		System.out.println("-------"+ to +"----"+message);
 //		Message inviteRequest = new Message();
 		try {
 //			Request r = inviteRequest.buildMessage(this, to, message);
 
 			Request r = sipRequestBuilder.buildMessage(this, to, message,method);
 
+			System.out.println("message头建立了！----------");
 			final ClientTransaction transaction = this.sipProvider.getNewClientTransaction(r);
 			Thread thread = new Thread() {
 				public void run() {
 					try {
+						System.out.println("-------------1-----");
 						transaction.sendRequest();
+						System.out.println("-------------12-----");
 					} catch (SipException e) {
 						e.printStackTrace();
 					}
@@ -430,7 +436,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("FRIENDLIST")){
 			System.out.println("FriendList:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = Var.FriendList;
+			msg.what = 1;
 			msg.obj = req.getContent();
 			mUpdateHandler.sendMessage(msg);
 			return ;
@@ -438,7 +444,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("ONLINEFRIENDLIST")){
 			System.out.println("OnLinefriendList:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = Var.OnlineFriendList;
+			msg.what = 2;
 			msg.obj = req.getContent();
 			mUpdateHandler.sendMessage(msg);
 			return;
@@ -446,7 +452,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("FRIENDUP")){
 			System.out.println("FRIENDUP:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = Var.FriendUp;
+			msg.what = 3;
 			msg.obj = req.getContent();
 			mUpdateHandler.sendMessage(msg);
 			return ;
@@ -455,7 +461,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("FRIENDDOWN")) {
 			System.out.println("FriendDOWN:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = Var.FriendDown;
+			msg.what = 4;
 			msg.obj = req.getContent();
 			mUpdateHandler.sendMessage(msg);
 		}
@@ -471,9 +477,10 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 
 		//离线消息
 		if(method.equals("DOWNLINEMESSAGE")) {
-			System.out.println("message:"+new String(req.getRawContent()));
-			Message msg = new Message();
-			msg.what = Var.DownlineMessage;
+			//System.out.println("message:"+new String(req.getRawContent()));
+            Log.d("在线消息", new String(req.getRawContent()));
+            Message msg = new Message();
+			msg.what = 6;
 			msg.obj = req.getContent();
 			mUpdateHandler.sendMessage(msg);
 		}
@@ -562,7 +569,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println((String) msg.obj);
 			mUpdateHandler.sendMessage(msg);
 			try {
-				SendMessage(Var.serverSip, "", "ACK");
+				//SendMessage(Var.serverSip, "", "ACK");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

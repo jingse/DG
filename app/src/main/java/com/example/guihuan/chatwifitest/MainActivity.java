@@ -1,5 +1,6 @@
 package com.example.guihuan.chatwifitest;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
@@ -23,15 +24,20 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.guihuan.chatwifitest.contacts.ContactsFragment;
 import com.example.guihuan.chatwifitest.contacts.MyFragmentPagerAdapter;
+import com.example.guihuan.chatwifitest.jsip_ua.impl.DeviceImpl;
 import com.example.guihuan.chatwifitest.messages.MsgFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.guihuan.chatwifitest.Var.myName;
+import static com.example.guihuan.chatwifitest.Var.serverSip;
 
 
 public class MainActivity extends FragmentActivity {
@@ -61,6 +67,14 @@ public class MainActivity extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); // 注意顺序
         setContentView(R.layout.main);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.main_title_bar);
+
+        Intent intent = this.getIntent();
+        myName = intent.getExtras().getString("user_name");
+
+        // 将标题栏的用户名设为正在聊天的人的用户名
+        TextView my_name = findViewById(R.id.my_name);
+        my_name.setText( myName);
+
 
         InitImageView();
         InitTextView();
@@ -175,8 +189,26 @@ public class MainActivity extends FragmentActivity {
 
                                 @Override
                                 public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                                    //String strItem = listRight.get(arg2).get("item");
+                                    String strItem = listRight.get(arg2).get("item");
+                                    Toast.makeText(MainActivity.this, strItem, Toast.LENGTH_SHORT).show();
+
+                                    if(strItem.equals("添加好友")) {
+
+                                    }
+                                    if(strItem.equals("创建群聊")) {
+
+                                    }
+                                    if(strItem.equals("退出登录")) {
+
+                                        Intent intent = new Intent();  //回到登陆界面
+                                        intent.setClass(MainActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                        //TODO:把消息发出去
+                                        DeviceImpl.getInstance().SendMessage(myName, serverSip, "GoodBye");
+
+                                    }
                                     //more_btn.setText(strItem);
+
 
                                     if (more_window != null && more_window.isShowing()) {
                                         more_window.dismiss();

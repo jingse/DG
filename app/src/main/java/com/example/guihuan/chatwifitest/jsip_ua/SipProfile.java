@@ -22,12 +22,14 @@
 
 package com.example.guihuan.chatwifitest.jsip_ua;
 
+import com.example.guihuan.chatwifitest.Var;
+
 public class SipProfile {
 	private String localIp;
 	private  int localPort = 5080;
 	private String transport = "udp";
 
-	private String remoteIp = "10.128.253.106";
+	//private String remoteIp = "10.128.253.106";
 	private  int remotePort = 6666;
 	private String sipUserName;
 	private String sipPassword;
@@ -55,13 +57,9 @@ public class SipProfile {
 	}
 
 	public String getRemoteIp() {
-		return remoteIp;
+		return Var.serverHost;
 	}
 
-	public  void setRemoteIp(String remoteIp) {
-		System.out.println("Setting remoteIp:" + remoteIp);
-		this.remoteIp = remoteIp;
-	}
 
 	public  int getRemotePort() {
 		return remotePort;
@@ -73,7 +71,7 @@ public class SipProfile {
 	}
 
 	public String getRemoteEndpoint() {
-		return remoteIp + ":" + remotePort;
+		return Var.serverHost + ":" + remotePort;
 	}
 
 	public String getSipUserName() {

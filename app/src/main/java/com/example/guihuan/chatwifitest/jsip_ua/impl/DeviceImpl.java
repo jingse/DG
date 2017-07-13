@@ -90,7 +90,7 @@ public class DeviceImpl implements IDevice,Serializable {
 		this.context = context;
 		this.sipProfile = sipProfile;
 		sipManager = new SipManager(sipProfile);
-		soundManager = new SoundManager(context,sipProfile.getLocalIp());
+//		soundManager = new SoundManager(context,sipProfile.getLocalIp());
 		sipManager.addSipEventListener(this);
 	}
 	
@@ -183,10 +183,10 @@ public class DeviceImpl implements IDevice,Serializable {
 	}
 
 	@Override
-	public void SendMessage(String to, String message,String method) {
+	public void SendMessage(String to, String message, String method) {
 		try {
-			System.out.println("-------"+to+"----"+message);
-			this.sipManager.SendMessage(to, message,method);
+
+			this.sipManager.SendMessage(to, message, method);
 		} catch (NotInitializedException e) {
 			e.printStackTrace();
 		}

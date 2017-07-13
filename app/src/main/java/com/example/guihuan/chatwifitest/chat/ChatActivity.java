@@ -2,6 +2,7 @@ package com.example.guihuan.chatwifitest.chat;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -34,14 +36,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.guihuan.chatwifitest.R;
+import com.example.guihuan.chatwifitest.Var;
 import com.example.guihuan.chatwifitest.emoji.Emoji;
 import com.example.guihuan.chatwifitest.emoji.EmojiUtil;
 import com.example.guihuan.chatwifitest.emoji.FaceFragment;
+import com.example.guihuan.chatwifitest.jsip_ua.impl.DeviceImpl;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.guihuan.chatwifitest.Var.myName;
+import static com.example.guihuan.chatwifitest.Var.serverSip;
 
 
 public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmojiClickListener {
@@ -63,16 +70,15 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
     private FrameLayout container;
 
 
-    private Boolean isShowRecord;
     private Boolean isShowEmoji;
 
 
     private int friendImageId;
-    private String targetURI;
-    private String targetName;
-    private String myName;
+    private String friendName;
     private String latestMsg;
     private String latestMsgTime;
+    private String targetAddress;
+    private List<String> recentMsgList;//接受从list传过来的消息信息
 
 
     //自定义变量
@@ -84,19 +90,51 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
     private Handler chatHandler = new Handler() {
 
         public void handleMessage(Message msg) {
+
             switch (msg.what) {
-                case 4:
-                    /*TransferMsg transferMsg = (TransferMsg) msg.obj;
-                    if (transferMsg.getTo().contains("All")) {
-                        //群聊信息
-                        //dealPublic(transferMsg.getFrom(),transferMsg.getContent());
-                    } else {
-                        //私聊信息
-                        //dealPrivate(transferMsg.getFrom(),transferMsg.getContent());
-                    }*/
+
+                // 在线消息
+                case Var.Message:
+
+                    Toast.makeText(ChatActivity.this, "收到在线消息", Toast.LENGTH_SHORT).show();
+
+                    String data = String.valueOf(msg.obj);
+
+                    String temp[] = data.split("&");
+                    String type = temp[0];
+                    String from = temp[1];
+                    String to = temp[2];
+                    String msgContent = temp[3];
+                    String curTime = temp[4];
+
+                    if (type.equals("1")) { //私聊信息
+
+                        handlePrivateMsg(from, msgContent, curTime);
+                    } else { //群聊信息
+
+                        handlePublicMsg(from, msgContent, curTime);
+                    }
                     break;
-                case 9://定位聊天信息为最后一条
+
+                /*case 9: //定位聊天信息为最后一条
                     chatMsgListView.setSelection(chatMsgList.size()); // 将ListView定位到最后一行
+                    break;*/
+
+                //离线消息
+                case Var.DownlineMessage:
+                    String ddata = (String)msg.obj;
+                    String dtemp[] = ddata.split("&");
+                    String dtype = dtemp[0];
+                    String dfrom = dtemp[1];
+                    String dtime = dtemp[2];
+                    String dcontent = dtemp[3];
+
+                    if (dtype.equals("1")) { //消息
+                        handleOfflineMsg(dfrom, dtime, dcontent);
+                        //dealPublic(transferMsg.getFrom(),transferMsg.getContent());
+                    } else { //好友申请
+                        //dealPrivate(transferMsg.getFrom(),transferMsg.getContent());
+                    }
                     break;
                 default:
                     break;
@@ -110,19 +148,25 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
         super.onCreate(savedInstanceState);
 
+
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); // 注意顺序
         setContentView(R.layout.activity_chatting);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.chat_title_bar); // 注意顺序
 
-        //DeviceImpl.getInstance().setDeviceHandler(chatHandler);
+
+        DeviceImpl.getInstance().setChatHandler(chatHandler); // 将handler向下传
+
+
+
+
 
         Intent intent = this.getIntent();
-        final String friend_name = intent.getExtras().getString("chatting_friend_name");
+        friendName = intent.getExtras().getString("chatting_friend_name");
         friendImageId = intent.getExtras().getInt("chatting_friend_head");
 
         // 将标题栏的用户名设为正在聊天的人的用户名
         TextView chat_friend_name = findViewById(R.id.chat_title_name);
-        chat_friend_name.setText(friend_name);
+        chat_friend_name.setText(friendName);
 
         initChatMsgs();
 
@@ -132,7 +176,6 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
 
         backToMain = findViewById(R.id.chatBackToMain);
-
         inputText = findViewById(R.id.input_text);
         send = findViewById(R.id.send);
         inputText.setMovementMethod(LinkMovementMethod.getInstance());
@@ -147,7 +190,6 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         container = findViewById(R.id.Container);
         container.setVisibility(View.GONE);
 
-        isShowRecord = false;
         isShowEmoji = false;
 
 
@@ -179,7 +221,17 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                     adapter.notifyDataSetChanged();
                     container.setVisibility(View.GONE);
                     chatMsgListView.setSelection(chatMsgList.size());
-                    inputText.setText("");
+
+                    /*用handler异步刷新listview*/
+                    Message message1 = new Message();
+                    message1.what = Var.Message;
+//                    chatHandler.sendMessage(message1);
+                    inputText.setText(""); // 清空输入框中的内容
+
+
+                    String message = "1&" + myName + "&" + friendName + "&" + content;
+                    //TODO:把消息发出去
+                    DeviceImpl.getInstance().SendMessage(serverSip, message, "MESSAGE");
                 }
             }
         });
@@ -278,7 +330,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                  /*用handler异步刷新listview*/
                 Message message1 = new Message();
                 message1.what = 9;
-                chatHandler.sendMessage(message1);
+//                chatHandler.sendMessage(message1);
 
             }
         });
@@ -298,6 +350,40 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         ChatMsg chatMsg3 = new ChatMsg("This is Tom. Nice talking to you. ", ChatMsg.TYPE_RECEIVED, friendImageId);
         chatMsgList.add(chatMsg3);
     }
+
+
+    void handlePrivateMsg(String from, String content, String time){
+        if(from.equals(friendName)){
+            //展示私聊信息
+            updateMsgUI(content, ChatMsg.TYPE_RECEIVED);
+        }
+        else{
+            Toast.makeText(ChatActivity.this, content, Toast.LENGTH_SHORT).show();
+            //DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
+        }
+    }
+
+
+    void handlePublicMsg(String from, String content, String time){
+        if(friendName.equals("All")){
+            //展示群聊信息
+            if(!from.equals(myName))
+                updateMsgUI("["+ from + "]" + content, ChatMsg.TYPE_RECEIVED);
+        }
+        else{
+            DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
+        }
+    }
+
+
+    void handleOfflineMsg(String from, String time, String content) {
+
+
+    }
+
+
+
+
 
     //打开相册
     private void openAlbum() {
@@ -475,6 +561,24 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
     }
 
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public void setupUI(View view) {
+        //Set up touch listener for non-text box views to hide keyboard.
+
+        view.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                hideSoftKeyboard(ChatActivity.this);
+                return false;
+            }
+
+        });
+    }
+
 
 
     void updateMsgUI(String message, int type){
@@ -485,27 +589,6 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
     }
 
 
-    void dealPublic(String from,String content){
-        if(targetName.equals("All")){
-            /*展示群聊信息*/
-            if(!from.equals(myName))
-                updateMsgUI("["+from+"]"+content, ChatMsg.TYPE_RECEIVED);
-        }
-        else{
-            //DeviceImpl.getInstance().getReCallMsgList().add(from+"#502750694#"+content);
-        }
-    }
-
-
-    void dealPrivate(String from,String content){
-        if(from.equals(targetURI)){
-            /*展示私聊信息*/
-            updateMsgUI(content, ChatMsg.TYPE_RECEIVED);
-        }
-        else{
-           // DeviceImpl.getInstance().getReCallMsgList().add(from+"#502750694#"+content);
-        }
-    }
 
 
 }

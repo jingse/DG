@@ -25,6 +25,7 @@
             android:src="@drawable/headmine"/>
 
         <TextView
+            android:id="@+id/my_name"
             android:text="@string/my_name"
             android:textColor="#ffffff"
             android:textSize="60px"
