@@ -99,6 +99,8 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                     Toast.makeText(ChatActivity.this, "收到在线消息", Toast.LENGTH_SHORT).show();
 
                     String data = String.valueOf(msg.obj);
+                    Log.d("TAG", "消息: data is " + data);
+
 
                     String temp[] = data.split("&");
                     String type = temp[0];
