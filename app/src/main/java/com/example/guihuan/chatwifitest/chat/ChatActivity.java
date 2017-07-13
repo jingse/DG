@@ -229,10 +229,10 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
 
                     if(friendName.equals("群")) {
-                        String message = "1&" + myName + "&" + friendName + "&" + content;
+                        String message = "2&" + myName + "&" + friendName + "&" + content;
                         DeviceImpl.getInstance().SendMessage(serverSip, message, "MESSAGE");
                     }else{
-                        String message = "2&" + myName + "&" + friendName + "&" + content;
+                        String message = "1&" + myName + "&" + friendName + "&" + content;
                         DeviceImpl.getInstance().SendMessage(serverSip, message, "MESSAGE");
                     }
 
