@@ -203,7 +203,6 @@ public class MainActivity extends FragmentActivity {
                                         Intent intent = new Intent();  //回到登陆界面
                                         intent.setClass(MainActivity.this, LoginActivity.class);
                                         startActivity(intent);
-                                        //TODO:把消息发出去
                                         DeviceImpl.getInstance().SendMessage(serverSip, myName, "GOODBYE");
 
                                     }
