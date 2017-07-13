@@ -143,8 +143,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			addressFactory = sipFactory.createAddressFactory();
 			messageFactory = sipFactory.createMessageFactory();
 
-			udpListeningPoint = sipStack.createListeningPoint(
-					Var.host, Var.port, "udp");
+			udpListeningPoint = sipStack.createListeningPoint(Var.host, Var.port, "udp");
 
 			System.out.println(sipProfile.getLocalIp()+"------"+sipProfile.getLocalPort()+"========"+sipProfile.getTransport());
 
@@ -152,7 +151,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			sipProvider.addSipListener(this);
 			initialized = true;
 			sipManagerState = SipManagerState.READY;
-			System.out.println(sipStack.getIPAddress()+"----"+sipProvider.getListeningPoint("udp").getPort());
+			System.out.println(sipStack.getIPAddress()+"----"+ sipProvider.getListeningPoint("udp").getPort());
 		} catch (PeerUnavailableException e) {
 			return false;
 		} catch (Exception e) {
@@ -437,7 +436,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("FriendList:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 1;
-			msg.obj = String.valueOf(req.getRawContent());
+			msg.obj = new String(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 			return ;
 		}
@@ -445,7 +444,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("OnLinefriendList:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 2;
-			msg.obj = String.valueOf(req.getRawContent());
+			msg.obj = new String(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 			return;
 		}
@@ -453,7 +452,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("FRIENDUP:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 3;
-			msg.obj = String.valueOf(req.getRawContent());
+			msg.obj = new String(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 			return ;
 		}
@@ -462,7 +461,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("FriendDOWN:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 4;
-			msg.obj = String.valueOf(req.getRawContent());
+			msg.obj = new String(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 		}
 
@@ -471,7 +470,8 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("message:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 5;
-			msg.obj = String.valueOf(req.getRawContent());
+			//msg.obj = String.valueOf(req.getRawContent());
+            msg.obj = new String(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 		}
 
@@ -481,7 +481,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
             Log.d("在线消息", new String(req.getRawContent()));
             Message msg = new Message();
 			msg.what = 6;
-			msg.obj = String.valueOf(req.getRawContent());
+			msg.obj = new String(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 		}
 

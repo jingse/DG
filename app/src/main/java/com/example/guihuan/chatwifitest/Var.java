@@ -5,13 +5,14 @@ package com.example.guihuan.chatwifitest;
  */
 
 public class Var {
-    public static String serverSip="sip:Server@10.128.205.66:6666";
-    public static String serverHost="10.128.205.66";
+    public static String serverSip="sip:Server@10.110.211.35:6666";
+    public static String serverHost="10.110.211.35";
     public static  int  serverPort=6666;
 
     public static String Username="client";
-    public static String host="10.28.253.70"; //桂欢手机ip
+    //public static String host="10.28.253.70"; //桂欢手机ip
     //public static String host="10.28.245.174"; //孟越手机ip
+    public static String host="10.110.211.37"; //桂欢手机ip
     public static int port=5080;
 
     public static String myName = "我";

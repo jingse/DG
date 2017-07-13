@@ -10,14 +10,35 @@ public class ChatMsg {
     private String content;
     private int type;
 
+    public Boolean getGroupMsg() {
+        return isGroupMsg;
+    }
+
+    public void setGroupMsg(Boolean groupMsg) {
+        isGroupMsg = groupMsg;
+    }
+
+    private Boolean isGroupMsg;
+
+    public String getFriendName() {
+        return friendName;
+    }
+
+    public void setFriendName(String friendName) {
+        this.friendName = friendName;
+    }
+
+    private String friendName;
     private int friendImageId;
 
 
 
-    public ChatMsg(String content, int type, int friendImageId) {
+    public ChatMsg(String content, int type, String friendName, int friendImageId, Boolean isGroupMsg) {
         this.content = content;
         this.type = type;
+        this.friendName = friendName;
         this.friendImageId = friendImageId;
+        this.isGroupMsg = isGroupMsg;
     }
 
     public String getContent() {

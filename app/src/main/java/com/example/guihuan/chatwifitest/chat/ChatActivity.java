@@ -159,9 +159,6 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         DeviceImpl.getInstance().setChatHandler(chatHandler); // 将handler向下传
 
 
-
-
-
         Intent intent = this.getIntent();
         friendName = intent.getExtras().getString("chatting_friend_name");
         friendImageId = intent.getExtras().getInt("chatting_friend_head");
@@ -218,7 +215,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             public void onClick(View v) {
                 String content = inputText.getText().toString();
                 if (!"".equals(content)) {
-                    ChatMsg chatMsg = new ChatMsg(content, ChatMsg.TYPE_SENT, friendImageId);
+                    ChatMsg chatMsg = new ChatMsg(content, ChatMsg.TYPE_SENT, myName, friendImageId, false);
                     chatMsgList.add(chatMsg);
                     adapter.notifyDataSetChanged();
                     container.setVisibility(View.GONE);
@@ -231,9 +228,15 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                     inputText.setText(""); // 清空输入框中的内容
 
 
-                    String message = "1&" + myName + "&" + friendName + "&" + content;
-                    //TODO:把消息发出去
-                    DeviceImpl.getInstance().SendMessage(serverSip, message, "MESSAGE");
+                    if(friendName.equals("群")) {
+                        String message = "1&" + myName + "&" + friendName + "&" + content;
+                        DeviceImpl.getInstance().SendMessage(serverSip, message, "MESSAGE");
+                    }else{
+                        String message = "2&" + myName + "&" + friendName + "&" + content;
+                        DeviceImpl.getInstance().SendMessage(serverSip, message, "MESSAGE");
+                    }
+
+
                 }
             }
         });
@@ -345,19 +348,50 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
 
     private void initChatMsgs() {
-        ChatMsg chatMsg1 = new ChatMsg("Hello guy.", ChatMsg.TYPE_RECEIVED, friendImageId);
-        chatMsgList.add(chatMsg1);
-        ChatMsg chatMsg2 = new ChatMsg("Hello. Who is that?", ChatMsg.TYPE_SENT, friendImageId);
-        chatMsgList.add(chatMsg2);
-        ChatMsg chatMsg3 = new ChatMsg("This is Tom. Nice talking to you. ", ChatMsg.TYPE_RECEIVED, friendImageId);
-        chatMsgList.add(chatMsg3);
+        switch (friendName){
+            case "1":
+                ChatMsg chatMsg1 = new ChatMsg("Hello guy.", ChatMsg.TYPE_RECEIVED, friendName, friendImageId, false);
+                chatMsgList.add(chatMsg1);
+                ChatMsg chatMsg2 = new ChatMsg("Hello. Who is that?", ChatMsg.TYPE_SENT, friendName, friendImageId, false);
+                chatMsgList.add(chatMsg2);
+                ChatMsg chatMsg3 = new ChatMsg("This is Tom. Nice talking to you. ", ChatMsg.TYPE_RECEIVED, friendName, friendImageId, false);
+                chatMsgList.add(chatMsg3);
+                break;
+            case "2":
+                ChatMsg chatMsg2_1 = new ChatMsg("你好.", ChatMsg.TYPE_RECEIVED, friendName, friendImageId, false);
+                chatMsgList.add(chatMsg2_1);
+                ChatMsg chatMsg2_2 = new ChatMsg("你好", ChatMsg.TYPE_SENT, friendName, friendImageId, false);
+                chatMsgList.add(chatMsg2_2);
+                break;
+            case "3":
+                ChatMsg chatMsg3_1 = new ChatMsg("哈哈.", ChatMsg.TYPE_RECEIVED, friendName, friendImageId, false);
+                chatMsgList.add(chatMsg3_1);
+                ChatMsg chatMsg3_2 = new ChatMsg("再见", ChatMsg.TYPE_SENT, friendName, friendImageId, false);
+                chatMsgList.add(chatMsg3_2);
+                break;
+            case "4":
+                ChatMsg chatMsg4_1 = new ChatMsg("我是4，你是？", ChatMsg.TYPE_RECEIVED, friendName, friendImageId, false);
+                chatMsgList.add(chatMsg4_1);
+                ChatMsg chatMsg4_2 = new ChatMsg("不告诉你", ChatMsg.TYPE_SENT, friendName, friendImageId, false);
+                chatMsgList.add(chatMsg4_2);
+                break;
+            case "群":
+                ChatMsg chatMsg5_1 = new ChatMsg("大家好", ChatMsg.TYPE_RECEIVED, friendName, R.drawable.headgroupmember, true);
+                chatMsgList.add(chatMsg5_1);
+                ChatMsg chatMsg5_2 = new ChatMsg("你好", ChatMsg.TYPE_SENT, friendName, R.drawable.headgroupmember, true);
+                chatMsgList.add(chatMsg5_2);
+                break;
+            default:
+                break;
+        }
+
     }
 
 
     void handlePrivateMsg(String from, String content, String time){
         if(from.equals(friendName)){
             //展示私聊信息
-            updateMsgUI(content, ChatMsg.TYPE_RECEIVED);
+            updateMsgUI(content, ChatMsg.TYPE_RECEIVED, friendImageId);
         }
         else{
             Toast.makeText(ChatActivity.this, content, Toast.LENGTH_SHORT).show();
@@ -367,13 +401,14 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
 
     void handlePublicMsg(String from, String content, String time){
-        if(friendName.equals("All")){
+        if(friendName.equals("群")){
             //展示群聊信息
             if(!from.equals(myName))
-                updateMsgUI("["+ from + "]" + content, ChatMsg.TYPE_RECEIVED);
+                updateMsgUI("["+ from + "]" + content, ChatMsg.TYPE_RECEIVED, R.drawable.headgroupmember);
         }
         else{
-            DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
+            Toast.makeText(ChatActivity.this, content, Toast.LENGTH_SHORT).show();
+            //DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
         }
     }
 
@@ -583,8 +618,8 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
 
 
-    void updateMsgUI(String message, int type){
-        ChatMsg msg = new ChatMsg(message, type, friendImageId);
+    void updateMsgUI(String message, int type, int friendImageId){
+        ChatMsg msg = new ChatMsg(message, type, friendName, friendImageId, false);
         chatMsgList.add(msg);
         adapter.notifyDataSetChanged();                   // 当有新消息时，刷新ListView中的显示
         chatMsgListView.setSelection(chatMsgList.size()); // 将ListView定位到最后一行

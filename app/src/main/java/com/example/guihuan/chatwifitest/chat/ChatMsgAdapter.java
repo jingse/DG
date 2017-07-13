@@ -37,6 +37,7 @@ public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
             viewHolder.rightLayout = view.findViewById(R.id.right_layout);
             viewHolder.leftMsg = view.findViewById(R.id.left_msg);
             viewHolder.rightMsg = view.findViewById(R.id.right_msg);
+            viewHolder.friendName = view.findViewById(R.id.chatting_name);
             viewHolder.friendImage = view.findViewById(R.id.chatting_person_head);
             view.setTag(viewHolder);
         } else {
@@ -56,6 +57,7 @@ public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
             viewHolder.rightMsg.setText(chatMsg.getContent());
             displayTextView(viewHolder.rightMsg);
         }
+        viewHolder.friendName.setText(chatMsg.getFriendName());
         viewHolder.friendImage.setImageResource(chatMsg.getFriendImageId());
         return view;
     }
@@ -77,6 +79,7 @@ public class ChatMsgAdapter extends ArrayAdapter<ChatMsg> {
         TextView leftMsg;
         TextView rightMsg;
         CircleImageView friendImage;
+        TextView friendName;
 
     }
 

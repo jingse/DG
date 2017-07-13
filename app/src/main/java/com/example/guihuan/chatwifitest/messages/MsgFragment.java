@@ -178,7 +178,8 @@ public class MsgFragment extends Fragment {
         msgList.add(friend3);
         Msg friend4 = new Msg("4", R.drawable.head4, "吃了么？", "12:23", false);
         msgList.add(friend4);
-
+        Msg group1 = new Msg("群", R.drawable.headgroup, "大家好", "13:30", false);
+        msgList.add(group1);
     }
 
 }
