@@ -95,9 +95,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
                 // 在线消息
                 case Var.Message:
-
-                    Toast.makeText(ChatActivity.this, "收到在线消息", Toast.LENGTH_SHORT).show();
-
+                    
                     String data = String.valueOf(msg.obj);
                     Log.d("TAG", "消息: data is " + data);
 
@@ -114,6 +112,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                         handlePrivateMsg(from, msgContent, curTime);
                     } else { //群聊信息
 
+                        Toast.makeText(ChatActivity.this, "收到群聊消息", Toast.LENGTH_SHORT).show();
                         handlePublicMsg(from, msgContent, curTime);
                     }
                     break;
@@ -404,7 +403,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         if(friendName.equals("群")){
             //展示群聊信息
             if(!from.equals(myName))
-                updateMsgUI("["+ from + "]" + content, ChatMsg.TYPE_RECEIVED, R.drawable.headgroupmember);
+                updateMsgUI(content, ChatMsg.TYPE_RECEIVED, R.drawable.headgroupmember);
         }
         else{
             Toast.makeText(ChatActivity.this, content, Toast.LENGTH_SHORT).show();
