@@ -2,6 +2,7 @@ package com.example.guihuan.chatwifitest;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.guihuan.chatwifitest.jsip_ua.SipProfile;
 import com.example.guihuan.chatwifitest.jsip_ua.impl.DeviceImpl;
+import com.example.guihuan.chatwifitest.jsip_ua.impl.sip_msg.Register;
 
 import java.util.HashMap;
 
@@ -33,22 +35,19 @@ public class RegisterActivity extends Activity {
     private String rePassword;
     private ImageButton backToLogin;
     private TextView txtBack;
-    private Context context;
-    public String serverSip="sip:Server@10.128.253.106:6666";
-    SipProfile sipProfile;
 
     private Handler registerHandler = new Handler() {
 
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case Var.UserhasExisted:
-                    editName.setError(String.valueOf(msg.obj));
+                    editName.setError(getString(R.string.user_has_existed));
                     break;
                 case Var.ServerError:
-                    Toast.makeText(context,String.valueOf(msg.obj),Toast.LENGTH_SHORT);
+                    Toast.makeText(RegisterActivity.this,getString(R.string.server_error),Toast.LENGTH_SHORT);
                     break;
                 case Var.RegisterSuccess:
-                    Intent intent = new Intent(context, LoginActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
                     /*
                      Intent intent = new Intent();
@@ -72,14 +71,8 @@ public class RegisterActivity extends Activity {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); // 注意顺序
         setContentView(R.layout.activity_register);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.register_title_bar);
-        sipProfile = new SipProfile();
-        HashMap<String, String> customHeaders = new HashMap<>();
-        customHeaders.put("customHeader1","customValue1");
-        customHeaders.put("customHeader2","customValue2");
 
-        DeviceImpl.getInstance().Initialize(getApplicationContext(), sipProfile,customHeaders);
         DeviceImpl.getInstance().setChatHandler(registerHandler);
-        context = getBaseContext();
         editName = (EditText) findViewById(R.id.edit_name);
         editPassword = (EditText) findViewById(R.id.edit_password);
         editRePassword = (EditText) findViewById(R.id.edit_repassword);
