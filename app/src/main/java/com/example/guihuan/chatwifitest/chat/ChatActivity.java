@@ -44,7 +44,9 @@ import com.example.guihuan.chatwifitest.jsip_ua.impl.DeviceImpl;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.guihuan.chatwifitest.Var.myName;
@@ -97,8 +99,6 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                 case Var.Message:
 
                     String data = String.valueOf(msg.obj);
-                    Log.d("TAG", "消息: data is " + data);
-
 
                     String temp[] = data.split("&");
                     String type = temp[0];
@@ -106,6 +106,9 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                     String to = temp[2];
                     String msgContent = temp[3];
                     String curTime = temp[4];
+
+                    latestMsgTime = curTime;
+                    latestMsg = msgContent;
 
                     if (type.equals("1")) { //私聊信息
 
@@ -213,6 +216,12 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             @Override
             public void onClick(View v) {
                 String content = inputText.getText().toString();
+
+                Date now = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                latestMsgTime = dateFormat.format(now);
+                latestMsg = content;
+
                 if (!"".equals(content)) {
                     ChatMsg chatMsg = new ChatMsg(content, ChatMsg.TYPE_SENT, myName, friendImageId, false);
                     chatMsgList.add(chatMsg);
@@ -223,7 +232,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                     /*用handler异步刷新listview*/
                     Message message1 = new Message();
                     message1.what = Var.Message;
-                    chatHandler.sendMessage(message1);
+                    //chatHandler.sendMessage(message1);
                     inputText.setText(""); // 清空输入框中的内容
 
 
@@ -403,7 +412,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         }
         else{
             Toast.makeText(ChatActivity.this, content, Toast.LENGTH_SHORT).show();
-            //DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
+            DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
         }
     }
 
@@ -416,7 +425,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         }
         else{
             Toast.makeText(ChatActivity.this, content, Toast.LENGTH_SHORT).show();
-            //DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
+            DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
         }
     }
 

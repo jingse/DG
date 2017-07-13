@@ -17,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -92,6 +93,8 @@ public class DeviceImpl implements IDevice,Serializable {
 		sipManager = new SipManager(sipProfile);
 //		soundManager = new SoundManager(context,sipProfile.getLocalIp());
 		sipManager.addSipEventListener(this);
+		reCallMsgList = new ArrayList<String>();
+		reCallMsgList.clear();
 	}
 	
 	@Override

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.guihuan.chatwifitest.R;
@@ -72,28 +71,28 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
     }
 
 
-    public void updataView(String latestMsg, String latestMsgTime, int posi, ListView listView) {
-        int visibleFirstPosi = listView.getFirstVisiblePosition();
-        int visibleLastPosi = listView.getLastVisiblePosition();
-        if (posi >= visibleFirstPosi && posi <= visibleLastPosi) {
-            View view = listView.getChildAt(posi - visibleFirstPosi);
-            ViewHolder holder = (ViewHolder) view.getTag();
-
-            //String txt = holder.strText.getText().toString();
-            //txt = txt + "++;";
-            Msg msg = msgList.get(posi);
-            msg.setLatestMsg(latestMsg);
-            msg.setLatestMsgTime(latestMsgTime);
-            holder.latestMsg.setText(latestMsg);
-            holder.latestMsgTime.setText(latestMsgTime);
-            msgList.set(posi, msg);
-        } else {
-            Msg msg = msgList.get(posi);
-            msg.setLatestMsg(latestMsg);
-            msg.setLatestMsgTime(latestMsgTime);
-            msgList.set(posi, msg);
-        }
-    }
+//    public void updataView(String latestMsg, String latestMsgTime, int posi, ListView listView) {
+//        int visibleFirstPosi = listView.getFirstVisiblePosition();
+//        int visibleLastPosi = listView.getLastVisiblePosition();
+//        if (posi >= visibleFirstPosi && posi <= visibleLastPosi) {
+//            View view = listView.getChildAt(posi - visibleFirstPosi);
+//            ViewHolder holder = (ViewHolder) view.getTag();
+//
+//            //String txt = holder.strText.getText().toString();
+//            //txt = txt + "++;";
+//            Msg msg = msgList.get(posi);
+//            msg.setLatestMsg(latestMsg);
+//            msg.setLatestMsgTime(latestMsgTime);
+//            holder.latestMsg.setText(latestMsg);
+//            holder.latestMsgTime.setText(latestMsgTime);
+//            msgList.set(posi, msg);
+//        } else {
+//            Msg msg = msgList.get(posi);
+//            msg.setLatestMsg(latestMsg);
+//            msg.setLatestMsgTime(latestMsgTime);
+//            msgList.set(posi, msg);
+//        }
+//    }
 
 
 

@@ -114,6 +114,25 @@ public class MsgFragment extends Fragment {
                         mPtrFrame.refreshComplete();
 
 
+                        List<Msg> newMsgList = new ArrayList<>();
+                        for(int i = 0; i < msgList.size(); i++) {
+
+                        }
+                        Msg friend1 = new Msg("1", R.drawable.head1, "hah", "10:00", false);
+                        newMsgList.add(friend1);
+                        Msg friend2 = new Msg("2", R.drawable.head2, "hah", "刚刚", false);
+                        newMsgList.add(friend2);
+                        Msg friend3 = new Msg("3", R.drawable.head3, "hah", "昨天", false);
+                        newMsgList.add(friend3);
+                        Msg friend4 = new Msg("4", R.drawable.head4, "hah？", "12:23", false);
+                        newMsgList.add(friend4);
+                        Msg group1 = new Msg("群", R.drawable.headgroup, "hah", "13:30", false);
+                        newMsgList.add(group1);
+
+                        adapter = new MsgAdapter(getContext(), R.layout.msg_item, newMsgList);
+                        listView.setAdapter(adapter);
+
+
 
                         //mPtrFrame.autoRefresh();//自动刷新
                     }
@@ -196,24 +215,17 @@ public class MsgFragment extends Fragment {
                     temp.setLatestMsgTime(latestMsgTime);
                 }
             }
-            adapter.updataView(latestMsg, latestMsgTime, pos, listView);
-//            adapter.clear();
-//            List<Msg> newMsgList = new ArrayList<>();
-//            for(int i = 0; i < msgList.size(); i++) {
-//                Msg friend1 = new Msg("1", R.drawable.head1, "我在南锣鼓巷", "10:00", false);
-//                newMsgList.add(friend1);
-//                Msg friend2 = new Msg("2", R.drawable.head2, "你好", "刚刚", false);
-//                newMsgList.add(friend2);
-//                Msg friend3 = new Msg("3", R.drawable.head3, "再见咯", "昨天", false);
-//                newMsgList.add(friend3);
-//                Msg friend4 = new Msg("4", R.drawable.head4, "吃了么？", "12:23", false);
-//                newMsgList.add(friend4);
-//                Msg group1 = new Msg("群", R.drawable.headgroup, "大家好", "13:30", false);
-//                newMsgList.add(group1);
-//            }
+            //adapter.updataView(latestMsg, latestMsgTime, pos, listView);
+            //adapter.clear();
 
 
-           // adapter.notifyDataSetChanged();
+
+
+//            Msg msg = msgList.get(pos);
+//            msg.setLatestMsg(latestMsg);
+//            msg.setLatestMsgTime(latestMsgTime);
+//            msgList.set(pos, msg);
+//            adapter.notifyDataSetChanged();
 
             //Log.d("text",text);
             //editText.setText(text);
@@ -222,15 +234,15 @@ public class MsgFragment extends Fragment {
 
 
     private void initMessages() {
-        Msg friend1 = new Msg("1", R.drawable.head1, "我在南锣鼓巷", "10:00", false);
+        Msg friend1 = new Msg("1", R.drawable.head1, "This is Tom. Nice talking to you.", "10:00", false);
         msgList.add(friend1);
         Msg friend2 = new Msg("2", R.drawable.head2, "你好", "刚刚", false);
         msgList.add(friend2);
-        Msg friend3 = new Msg("3", R.drawable.head3, "再见咯", "昨天", false);
+        Msg friend3 = new Msg("3", R.drawable.head3, "再见", "昨天", false);
         msgList.add(friend3);
-        Msg friend4 = new Msg("4", R.drawable.head4, "吃了么？", "12:23", false);
+        Msg friend4 = new Msg("4", R.drawable.head4, "不告诉你", "12:23", false);
         msgList.add(friend4);
-        Msg group1 = new Msg("群", R.drawable.headgroup, "大家好", "13:30", false);
+        Msg group1 = new Msg("群", R.drawable.headgroup, "你好", "13:30", false);
         msgList.add(group1);
     }
 
