@@ -81,7 +81,8 @@ public class MsgFragment extends Fragment {
                         List<Msg> newMsgList = new ArrayList<>();
                         for(int i = 0; i < msgList.size(); i++) {
                             Msg friend = new Msg(String.valueOf(i+1), msgList.get(i).getImageId(),
-                                       msgList.get(i).getLatestMsg(), msgList.get(i).getLatestMsgTime(), false);
+                                       msgList.get(i).getLatestMsg(), msgList.get(i).getLatestMsgTime(),
+                                       false, msgList.get(i).getNotReadCount());
                             newMsgList.add(friend);
                         }
 
@@ -175,7 +176,8 @@ public class MsgFragment extends Fragment {
         List<Msg> newMsgList = new ArrayList<>();
         for(int i = 0; i < msgList.size(); i++) {
             Msg friend = new Msg(String.valueOf(i+1), msgList.get(i).getImageId(),
-                    msgList.get(i).getLatestMsg(), msgList.get(i).getLatestMsgTime(), false);
+                    msgList.get(i).getLatestMsg(), msgList.get(i).getLatestMsgTime(),
+                    false, msgList.get(i).getNotReadCount());
             newMsgList.add(friend);
         }
 
@@ -187,15 +189,15 @@ public class MsgFragment extends Fragment {
 
 
     private void initMessages() {
-        Msg friend1 = new Msg("1", R.drawable.head1, "This is Tom. Nice talking to you.", "10:00", false);
+        Msg friend1 = new Msg("1", R.drawable.head1, "This is Tom. Nice talking to you.", "10:00", false, 0);
         msgList.add(friend1);
-        Msg friend2 = new Msg("2", R.drawable.head2, "你好", "刚刚", false);
+        Msg friend2 = new Msg("2", R.drawable.head2, "你好", "刚刚", false, 0);
         msgList.add(friend2);
-        Msg friend3 = new Msg("3", R.drawable.head3, "再见", "昨天", false);
+        Msg friend3 = new Msg("3", R.drawable.head3, "再见", "昨天", false, 0);
         msgList.add(friend3);
-        Msg friend4 = new Msg("4", R.drawable.head4, "不告诉你", "12:23", false);
+        Msg friend4 = new Msg("4", R.drawable.head4, "不告诉你", "12:23", false, 0);
         msgList.add(friend4);
-        Msg group1 = new Msg("群", R.drawable.headgroup, "你好", "13:30", false);
+        Msg group1 = new Msg("群", R.drawable.headgroup, "你好", "13:30", false, 0);
         msgList.add(group1);
     }
 

@@ -28,8 +28,6 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
 
 
 
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Msg msg = getItem(position);
@@ -53,46 +51,25 @@ public class MsgAdapter extends ArrayAdapter<Msg> {
         viewHolder.latestMsgTime.setText(msg.getLatestMsgTime());
 
 
-        viewHolder.badgeView = new BadgeView(getContext());
-        //BadgeView badgeView = new BadgeView(getContext());
-        //btn是控件
-        viewHolder.badgeView.setTargetView(viewHolder.latestMsgTime);
-        //设置相对位置
-        viewHolder.badgeView.setBadgeMargin(5, 20, 0, 0);
-        //设置显示未读消息条数
-        viewHolder.badgeView.setBadgeCount(2);
-
-        if(msg.getClicked()) {
-            viewHolder.badgeView.setVisibility(View.GONE); //小红点消失
+        if(msg.getNotReadCount() != 0) {
+            viewHolder.badgeView = new BadgeView(getContext());
+            //BadgeView badgeView = new BadgeView(getContext());
+            //btn是控件
+            viewHolder.badgeView.setTargetView(viewHolder.latestMsgTime);
+            //设置相对位置
+            viewHolder.badgeView.setBadgeMargin(5, 20, 0, 0);
+            //设置显示未读消息条数
+            viewHolder.badgeView.setBadgeCount(msg.getNotReadCount());
         }
+
+
+//        if(msg.getClicked()) {
+//            viewHolder.badgeView.setVisibility(View.GONE); //小红点消失
+//        }
 
 
         return view;
     }
-
-
-//    public void updataView(String latestMsg, String latestMsgTime, int posi, ListView listView) {
-//        int visibleFirstPosi = listView.getFirstVisiblePosition();
-//        int visibleLastPosi = listView.getLastVisiblePosition();
-//        if (posi >= visibleFirstPosi && posi <= visibleLastPosi) {
-//            View view = listView.getChildAt(posi - visibleFirstPosi);
-//            ViewHolder holder = (ViewHolder) view.getTag();
-//
-//            //String txt = holder.strText.getText().toString();
-//            //txt = txt + "++;";
-//            Msg msg = msgList.get(posi);
-//            msg.setLatestMsg(latestMsg);
-//            msg.setLatestMsgTime(latestMsgTime);
-//            holder.latestMsg.setText(latestMsg);
-//            holder.latestMsgTime.setText(latestMsgTime);
-//            msgList.set(posi, msg);
-//        } else {
-//            Msg msg = msgList.get(posi);
-//            msg.setLatestMsg(latestMsg);
-//            msg.setLatestMsgTime(latestMsgTime);
-//            msgList.set(posi, msg);
-//        }
-//    }
 
 
 

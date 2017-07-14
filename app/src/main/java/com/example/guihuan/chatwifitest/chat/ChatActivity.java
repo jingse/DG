@@ -2,7 +2,6 @@ package com.example.guihuan.chatwifitest.chat;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,7 +23,6 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -81,6 +79,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
     private String latestMsg;
     private String latestMsgTime;
     private int msgId;
+    private int notReadCount = 0;
     private List<String> recentMsgList;//接受从list传过来的消息信息
 
 
@@ -123,9 +122,6 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                     }
                     break;
 
-                /*case 9: //定位聊天信息为最后一条
-                    chatMsgListView.setSelection(chatMsgList.size()); // 将ListView定位到最后一行
-                    break;*/
 
                 //离线消息
                 case Var.DownlineMessage:
@@ -358,7 +354,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                  /*用handler异步刷新listview*/
                 Message message1 = new Message();
                 message1.what = 9;
-//                chatHandler.sendMessage(message1);
+//              chatHandler.sendMessage(message1);
 
             }
         });
@@ -417,7 +413,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             updateMsgUI(content, ChatMsg.TYPE_RECEIVED, friendImageId);
         }
         else{
-            Toast.makeText(ChatActivity.this, content, Toast.LENGTH_SHORT).show();
+            msgList.get(msgId).setNotReadCount(++notReadCount);
             DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
         }
     }
@@ -430,7 +426,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                 updateMsgUI(content, ChatMsg.TYPE_RECEIVED, R.drawable.headgroupmember);
         }
         else{
-            Toast.makeText(ChatActivity.this, content, Toast.LENGTH_SHORT).show();
+            msgList.get(msgId).setNotReadCount(++notReadCount);
             DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
         }
     }
@@ -620,25 +616,6 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         }
 
     }
-
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-    }
-
-    public void setupUI(View view) {
-        //Set up touch listener for non-text box views to hide keyboard.
-
-        view.setOnTouchListener(new View.OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent event) {
-                hideSoftKeyboard(ChatActivity.this);
-                return false;
-            }
-
-        });
-    }
-
 
 
     void updateMsgUI(String message, int type, int friendImageId){
