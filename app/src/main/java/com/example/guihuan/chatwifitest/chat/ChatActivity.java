@@ -260,7 +260,6 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         backToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ChatActivity.this, "back", Toast.LENGTH_SHORT).show();
 
                 Intent intent = getIntent();
                 Bundle bundle = new Bundle();
@@ -268,7 +267,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                 bundle.putString("latestMsg",latestMsg);
                 bundle.putString("latestMsgTime", latestMsgTime);
                 intent.putExtras(bundle);
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK, intent);
 
                 finish();
             }

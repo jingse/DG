@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.guihuan.chatwifitest.Var.msgList;
 import static com.example.guihuan.chatwifitest.Var.myName;
 import static com.example.guihuan.chatwifitest.Var.serverSip;
 
@@ -201,6 +200,7 @@ public class MainActivity extends FragmentActivity {
                                     }
                                     if(strItem.equals("退出登录")) {
 
+                                        msgList.clear();
                                         Intent intent = new Intent();  //回到登陆界面
                                         intent.setClass(MainActivity.this, LoginActivity.class);
                                         startActivity(intent);
