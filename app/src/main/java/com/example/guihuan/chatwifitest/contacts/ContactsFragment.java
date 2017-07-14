@@ -154,16 +154,17 @@ public class ContactsFragment extends Fragment {
 
         friendName = Var.friendList.split("&");
         onlineFriendName = Var.onlineList.split("&");
-        mGroup.get(0).setOnlineNum( onlineFriendName.length);
-        System.out.println("在线好友个数：" + mGroup.get(0).getOnlineNum());
+        int onlineNum = 0;
+
+        //System.out.println("在线好友个数：" + mGroup.get(0).getOnlineNum());
         if (!(friendName == null || friendName.length == 0)) {
             for (int i = 0; i < friendName.length; i++) {
                 isOnline.put(friendName[i], 0);
-
                 for (int j = 0; j < mGroup.get(0).getOnlineNum(); j++) {
                     isOnline.put(friendName[i], 0);
                     if (onlineFriendName[j].equals(friendName[i])) {
                         isOnline.put(friendName[i], 1);
+                        onlineNum++;
                     }
                 }
             }
@@ -184,6 +185,7 @@ public class ContactsFragment extends Fragment {
                 Contact contact = new Contact(friendName[i], icon, state,0);
                 mChildren.get(0).add(contact);
             }
+            mGroup.get(0).setOnlineNum(onlineNum);
         }
 
         //加载数据，新建适配器
@@ -195,54 +197,67 @@ public class ContactsFragment extends Fragment {
     @SuppressLint("UseSparseArrays")
     private void refresh(String name, int state) {
 
-        isOnline.put(name, state);
-        mGroup.clear();
-        mChildren.clear();
-        //mGroup = new ArrayList<String>();
-        //mChildren = new HashMap<Integer, List<Contact>>();// 给每一组实例化child
-        //初始化组名和child
-        for (int i = 0; i < groups.length; ++i) {
-            Group group = new Group();
-            group.setName(groups[i]);// 组名
-            if (groups[i].equals("群")){
-                group.setOnlineNum(-1);
-                mGroup.add(group);
-                List<Contact> childUsers = new ArrayList<Contact>();// 每一组的child
-                Contact c = new Contact("群",  R.drawable.headgroup, "", 1);
-                mChildren.put(i, childUsers);
-                mChildren.get(i).add(c);
+        if (isOnline.get(name)!=null) {
+            int onlineNum = mGroup.get(0).getOnlineNum();
+            int oldState = isOnline.get(name);
+            if (oldState == state){
+                return;
             }
             else {
-                mGroup.add(group);
-                List<Contact> childUsers = new ArrayList<Contact>();// 每一组的child
-                mChildren.put(i, childUsers);
-            }
-        }
-
-        if (!(friendName == null || friendName.length == 0)) {
-            for (int i = 0; i < friendName.length; i++) {
-                int icon;
-
-                if (i < 4) {
-                    icon = heads[i];
-                } else {
-                    icon = R.drawable.ic_person;
+                if (state == 1){
+                    onlineNum ++;
                 }
-                String s;
-                int n = mGroup.get(0).getOnlineNum();
-                System.out.println("在线数：n");
-                if (isOnline.get(friendName[i]) == 1) {
-                    s = "在线";
-                    mGroup.get(0).setOnlineNum(n + 1);
-                } else {
-                    s = "离线";
-                    mGroup.get(0).setOnlineNum(n - 1);
+                else{
+                    onlineNum--;
                 }
-                Contact contact = new Contact(friendName[i], icon, s, 1);
-                mChildren.get(0).add(contact);
             }
+
+
+            mGroup.clear();
+            mChildren.clear();
+            //mGroup = new ArrayList<String>();
+            //mChildren = new HashMap<Integer, List<Contact>>();// 给每一组实例化child
+            //初始化组名和child
+            for (int i = 0; i < groups.length; ++i) {
+                Group group = new Group();
+                group.setName(groups[i]);// 组名
+                if (groups[i].equals("群")) {
+                    group.setOnlineNum(-1);
+                    mGroup.add(group);
+                    List<Contact> childUsers = new ArrayList<Contact>();// 每一组的child
+                    Contact c = new Contact("群", R.drawable.headgroup, "", 1);
+                    mChildren.put(i, childUsers);
+                    mChildren.get(i).add(c);
+                } else {
+                    mGroup.add(group);
+                    List<Contact> childUsers = new ArrayList<Contact>();// 每一组的child
+                    mChildren.put(i, childUsers);
+                }
+            }
+
+            if (!(friendName == null || friendName.length == 0)) {
+                for (int i = 0; i < friendName.length; i++) {
+                    int icon;
+
+                    if (i < 4) {
+                        icon = heads[i];
+                    } else {
+                        icon = R.drawable.ic_person;
+                    }
+                    String newState;
+                    System.out.println("在线数：n");
+                    if (isOnline.get(friendName[i]) == 1) {
+                        newState = "在线";
+                    } else {
+                        newState = "离线";
+                    }
+                    Contact contact = new Contact(friendName[i], icon, newState, 1);
+                    mChildren.get(0).add(contact);
+                }
+            }
+            mGroup.get(0).setOnlineNum(onlineNum);
+            mAdapter.notifyDataSetChanged();
         }
-        mAdapter.notifyDataSetChanged();
     }
     public static  int[] heads = { R.drawable.head1, R.drawable.head2, R.drawable.head3, R.drawable.head4};
 
