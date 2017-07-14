@@ -102,11 +102,9 @@ public class LoginActivity extends Activity {
             switch (msg.what) {
                 case Var.FriendList:
                     Var.friendList = String.valueOf(msg.obj);
-                    System.out.println("好友列表："+ Var.friendList);
                     break;
                 case Var.OnlineFriendList:
                     Var.onlineList = String.valueOf(msg.obj);
-                    System.out.println("在线好友列表："+ Var.onlineList);
                     break;
                 case Var.UserHasLogined:
                     editName.setError(getString(R.string.user_has_logined));

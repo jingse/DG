@@ -92,11 +92,10 @@ public class ContactsFragment extends Fragment {
             public void onLoadMore() {
             }
         });
-        System.out.println("我是联系人create1, 我获取的好友列表:  " +Var.friendList +"    "+Var.onlineList );
 //        friendName = Var.friendList.split("&");
   //      onlineFriendName = Var.onlineList.split("&");
         //初始化的数据
-
+        isOnline = new HashMap<String, Integer>();
         initContactData();
     }
 /*
@@ -150,21 +149,22 @@ public class ContactsFragment extends Fragment {
             }
         }
 
-        isOnline = new HashMap<String, Integer>();
+
 
         friendName = Var.friendList.split("&");
         onlineFriendName = Var.onlineList.split("&");
         int onlineNum = 0;
 
-        //System.out.println("在线好友个数：" + mGroup.get(0).getOnlineNum());
+
         if (!(friendName == null || friendName.length == 0)) {
             for (int i = 0; i < friendName.length; i++) {
                 isOnline.put(friendName[i], 0);
-                for (int j = 0; j < mGroup.get(0).getOnlineNum(); j++) {
-                    isOnline.put(friendName[i], 0);
+                for (int j = 0; j < onlineFriendName.length; j++) {
                     if (onlineFriendName[j].equals(friendName[i])) {
+                        isOnline.remove(friendName[i]);
                         isOnline.put(friendName[i], 1);
-                        onlineNum++;
+                        onlineNum +=1;
+                        break;
                     }
                 }
             }
@@ -204,6 +204,8 @@ public class ContactsFragment extends Fragment {
                 return;
             }
             else {
+                isOnline.remove(name);
+                isOnline.put(name, state);
                 if (state == 1){
                     onlineNum ++;
                 }
@@ -245,7 +247,6 @@ public class ContactsFragment extends Fragment {
                         icon = R.drawable.ic_person;
                     }
                     String newState;
-                    System.out.println("在线数：n");
                     if (isOnline.get(friendName[i]) == 1) {
                         newState = "在线";
                     } else {
