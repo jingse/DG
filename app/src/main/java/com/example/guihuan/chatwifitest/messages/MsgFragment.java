@@ -23,12 +23,12 @@ import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.util.PtrLocalDisplay;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.guihuan.chatwifitest.Var.msgList;
 
 
 public class MsgFragment extends Fragment {
 
 
-    private List<Msg> msgList = new ArrayList<>();
     private ListView listView;
     private MsgAdapter adapter;
     private int actionSwitch;//用来切换对list的相应事件
@@ -55,53 +55,18 @@ public class MsgFragment extends Fragment {
         mPtrFrame.setPullToRefresh(false);// 刷新是保持头部 默认值 true.
         mPtrFrame.setKeepHeaderWhenRefresh(true);//下拉刷新 / 释放刷新 默认为释放刷新*/
 
-        /**
-         * 经典 风格的头部实现
-         */
+
+        //经典 风格的头部实现
         final PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getContext());
         header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, 0);
 
 
-        /**
-         * StoreHouse风格的头部实现
-         */
-        /*final StoreHouseHeader header = new StoreHouseHeader(this);
-        header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, 0);*/
-
-        /**
-         * using a string, support: A-Z 0-9 - .
-         * you can add more letters by {@link in.srain.cube.views.ptr.header.StoreHousePath#addChar}
-         */
-        // header.initWithString("Alibaba");
-
-
-        /**
-         * Material Design风格的头部实现
-         */
-        /*final MaterialHeader header = new MaterialHeader(getContext());
-        header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, 0);//显示相关工具类，用于获取用户屏幕宽度、高度以及屏幕密度。同时提供了dp和px的转化方法。*/
-
-
-        /**
-         * Rentals Style风格的头部实现
-         * 这个需要引入这两个类RentalsSunDrawable.java ; RentalsSunHeaderView.java
-         * 在人家git上的daemon中能找到
-         */
-       /* final RentalsSunHeaderView header = new RentalsSunHeaderView(this);
-
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, LocalDisplay.dp2px(15), 0, LocalDisplay.dp2px(10));
-        header.setUp(mPtrFrame);
-        mPtrFrame.setLoadingMinTime(1000);
-        mPtrFrame.setDurationToCloseHeader(1500);*/
-
-
         // mPtrFrame = (PtrFrameLayout) findViewById(R.id.ptr);
         mPtrFrame.setHeaderView(header);
-        // mPtrFrame.setPinContent(true);//刷新时，保持内容不动，仅头部下移,默认,false
+        // mPtrFrame.setPinContent(true);             //刷新时，保持内容不动，仅头部下移,默认,false
         mPtrFrame.addPtrUIHandler(header);
-        //mPtrFrame.setKeepHeaderWhenRefresh(true);//刷新时保持头部的显示，默认为true
-        //mPtrFrame.disableWhenHorizontalMove(true);//如果是ViewPager，设置为true，会解决ViewPager滑动冲突问题。
+        //mPtrFrame.setKeepHeaderWhenRefresh(true);  //刷新时保持头部的显示，默认为true
+        //mPtrFrame.disableWhenHorizontalMove(true); //如果是ViewPager，设置为true，会解决ViewPager滑动冲突问题。
         mPtrFrame.setPtrHandler(new PtrHandler() {
 
             //需要加载数据时触发
@@ -113,26 +78,15 @@ public class MsgFragment extends Fragment {
                     public void run() {
                         mPtrFrame.refreshComplete();
 
-
                         List<Msg> newMsgList = new ArrayList<>();
                         for(int i = 0; i < msgList.size(); i++) {
-
+                            Msg friend = new Msg(String.valueOf(i+1), msgList.get(i).getImageId(),
+                                       msgList.get(i).getLatestMsg(), msgList.get(i).getLatestMsgTime(), false);
+                            newMsgList.add(friend);
                         }
-                        Msg friend1 = new Msg("1", R.drawable.head1, "hah", "10:00", false);
-                        newMsgList.add(friend1);
-                        Msg friend2 = new Msg("2", R.drawable.head2, "hah", "刚刚", false);
-                        newMsgList.add(friend2);
-                        Msg friend3 = new Msg("3", R.drawable.head3, "hah", "昨天", false);
-                        newMsgList.add(friend3);
-                        Msg friend4 = new Msg("4", R.drawable.head4, "hah？", "12:23", false);
-                        newMsgList.add(friend4);
-                        Msg group1 = new Msg("群", R.drawable.headgroup, "hah", "13:30", false);
-                        newMsgList.add(group1);
 
                         adapter = new MsgAdapter(getContext(), R.layout.msg_item, newMsgList);
                         listView.setAdapter(adapter);
-
-
 
                         //mPtrFrame.autoRefresh();//自动刷新
                     }
@@ -172,6 +126,7 @@ public class MsgFragment extends Fragment {
                 int imageId = msg.getImageId();
                 bundle.putString("chatting_friend_name", msg.getName()); //将朋友名称传进去
                 bundle.putInt("chatting_friend_head", imageId); //将朋友头像传进去
+                bundle.putInt("msgId", position);
                 intent.setClass(getContext(), ChatActivity.class);
                 intent.putExtras(bundle);
 
@@ -197,40 +152,38 @@ public class MsgFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==0 && resultCode==RESULT_OK){
             Bundle bundle = data.getExtras();
-            String friendName =null;
+            int msgId = 0;
             String latestMsg = null;
             String latestMsgTime = null;
             if(bundle!=null) {
-                friendName = bundle.getString("friendName");
+                msgId = bundle.getInt("msgId");
                 latestMsg = bundle.getString("latestMsg");
                 latestMsgTime = bundle.getString("latestMsgTime");
             }
 
-            int pos = 0;
-            for(int i = 0; i < msgList.size(); i++) {
-                Msg temp = msgList.get(i);
-                if(temp.getName().equals(friendName)) {
-                    pos = i;
-                    temp.setLatestMsg(latestMsg);
-                    temp.setLatestMsgTime(latestMsgTime);
-                }
-            }
-            //adapter.updataView(latestMsg, latestMsgTime, pos, listView);
-            //adapter.clear();
+            msgList.get(msgId).setLatestMsg(latestMsg);
+            msgList.get(msgId).setLatestMsgTime(latestMsgTime);
 
-
-
-
-//            Msg msg = msgList.get(pos);
-//            msg.setLatestMsg(latestMsg);
-//            msg.setLatestMsgTime(latestMsgTime);
-//            msgList.set(pos, msg);
-//            adapter.notifyDataSetChanged();
-
-            //Log.d("text",text);
-            //editText.setText(text);
         }
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        List<Msg> newMsgList = new ArrayList<>();
+        for(int i = 0; i < msgList.size(); i++) {
+            Msg friend = new Msg(String.valueOf(i+1), msgList.get(i).getImageId(),
+                    msgList.get(i).getLatestMsg(), msgList.get(i).getLatestMsgTime(), false);
+            newMsgList.add(friend);
+        }
+
+        adapter = new MsgAdapter(getContext(), R.layout.msg_item, newMsgList);
+        listView.setAdapter(adapter);
+
+    }
+
 
 
     private void initMessages() {

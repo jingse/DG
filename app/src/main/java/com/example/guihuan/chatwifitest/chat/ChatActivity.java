@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.guihuan.chatwifitest.Var.msgList;
 import static com.example.guihuan.chatwifitest.Var.myName;
 import static com.example.guihuan.chatwifitest.Var.serverSip;
 
@@ -79,7 +80,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
     private String friendName;
     private String latestMsg;
     private String latestMsgTime;
-    private String targetAddress;
+    private int msgId;
     private List<String> recentMsgList;//接受从list传过来的消息信息
 
 
@@ -109,6 +110,8 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
 
                     latestMsgTime = curTime;
                     latestMsg = msgContent;
+                    msgList.get(msgId).setLatestMsgTime(latestMsg);
+                    msgList.get(msgId).setLatestMsgTime(latestMsgTime);
 
                     if (type.equals("1")) { //私聊信息
 
@@ -164,6 +167,7 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
         Intent intent = this.getIntent();
         friendName = intent.getExtras().getString("chatting_friend_name");
         friendImageId = intent.getExtras().getInt("chatting_friend_head");
+        msgId = intent.getExtras().getInt("msgId");
 
         // 将标题栏的用户名设为正在聊天的人的用户名
         TextView chat_friend_name = findViewById(R.id.chat_title_name);
@@ -229,6 +233,9 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                     container.setVisibility(View.GONE);
                     chatMsgListView.setSelection(chatMsgList.size());
 
+                    msgList.get(msgId).setLatestMsg(latestMsg);
+                    msgList.get(msgId).setLatestMsgTime(latestMsgTime);
+
                     /*用handler异步刷新listview*/
                     Message message1 = new Message();
                     message1.what = Var.Message;
@@ -256,8 +263,8 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                 Toast.makeText(ChatActivity.this, "back", Toast.LENGTH_SHORT).show();
 
                 Intent intent = getIntent();
-                Bundle bundle =new Bundle();
-                bundle.putString("friendName", friendName);
+                Bundle bundle = new Bundle();
+                bundle.putInt("msgId", msgId);
                 bundle.putString("latestMsg",latestMsg);
                 bundle.putString("latestMsgTime", latestMsgTime);
                 intent.putExtras(bundle);
