@@ -39,6 +39,7 @@ import android.javax.sip.message.Request;
 import android.javax.sip.message.Response;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.example.guihuan.chatwifitest.R;
@@ -143,7 +144,8 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			addressFactory = sipFactory.createAddressFactory();
 			messageFactory = sipFactory.createMessageFactory();
 
-			udpListeningPoint = sipStack.createListeningPoint(Var.host, Var.port, "udp");
+			udpListeningPoint = sipStack.createListeningPoint(
+					Var.host, Var.port, "udp");
 
 			System.out.println(sipProfile.getLocalIp()+"------"+sipProfile.getLocalPort()+"========"+sipProfile.getTransport());
 
@@ -151,7 +153,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			sipProvider.addSipListener(this);
 			initialized = true;
 			sipManagerState = SipManagerState.READY;
-			System.out.println(sipStack.getIPAddress()+"----"+ sipProvider.getListeningPoint("udp").getPort());
+			System.out.println(sipStack.getIPAddress()+"----"+sipProvider.getListeningPoint("udp").getPort());
 		} catch (PeerUnavailableException e) {
 			return false;
 		} catch (Exception e) {
@@ -435,7 +437,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("FRIENDLIST")){
 			System.out.println("FriendList:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = 1;
+			msg.what = Var.FriendList;
 			msg.obj = new String(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 			return ;
@@ -443,7 +445,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 		if(method.equals("ONLINEFRIENDLIST")){
 			System.out.println("OnLinefriendList:"+new String(req.getRawContent()));
 			Message msg = new Message();
-			msg.what = 2;
+			msg.what = Var.OnlineFriendList;
 			msg.obj = new String(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 			return;
@@ -470,8 +472,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			System.out.println("message:"+new String(req.getRawContent()));
 			Message msg = new Message();
 			msg.what = 5;
-			//msg.obj = String.valueOf(req.getRawContent());
-            msg.obj = new String(req.getRawContent());
+			msg.obj = new String(req.getRawContent());
 			mUpdateHandler.sendMessage(msg);
 		}
 
@@ -504,6 +505,7 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 	// *** JAIN SIP: Incoming response *** //
 	@Override
 	public void processResponse(ResponseEvent evt) {
+		System.out.println("接收到响应");
 		Response response = evt.getResponse();
 		int status = response.getStatusCode();
 
@@ -517,56 +519,42 @@ public class SipManager implements SipListener, ISipManager, Serializable {
 			//注册成功
 			Message msg = new Message();
 			msg.what = Var.RegisterSuccess;
-			msg.obj = String.valueOf(R.string.register_success);
-			System.out.println((String) msg.obj);
 			mUpdateHandler.sendMessage(msg);
 			return;
 		}else if(status==601){
 			//用户已存在，注册失败
 			Message msg = new Message();
 			msg.what = Var.UserhasExisted;
-			msg.obj = String.valueOf(R.string.user_has_existed);
-			System.out.println((String) msg.obj);
 			mUpdateHandler.sendMessage(msg);
 			return;
 		}else if(status==602){
 			//服务器异常，注册失败
 			Message msg = new Message();
 			msg.what = Var.ServerError;
-			msg.obj = String.valueOf(R.string.server_error);
-			System.out.println((String) msg.obj);
 			mUpdateHandler.sendMessage(msg);
 			return;
 		}else if(status==610){
 			//登录失败：用户不存在;
 			Message msg = new Message();
 			msg.what = Var.UserNotExist;
-			msg.obj = String.valueOf(R.string.user_not_exist);
-			System.out.println((String) msg.obj);
 			mUpdateHandler.sendMessage(msg);
 			return;
 		}else if(status==611){
 			//登录失败：密码错误
 			Message msg = new Message();
 			msg.what = Var.PasswordIncorrect;
-			msg.obj = String.valueOf(R.string.password_incorrect);
-			System.out.println((String) msg.obj);
 			mUpdateHandler.sendMessage(msg);
 			return;
 		}else if(status==612){
 			//登录失败：用户已经登录
 			Message msg = new Message();
 			msg.what = Var.UserHasLogined;
-			msg.obj = String.valueOf(R.string.user_has_logined);
-			System.out.println((String) msg.obj);
 			mUpdateHandler.sendMessage(msg);
 			return;
 		}else if(status==613){
 			//登录成功
 			Message msg = new Message();
 			msg.what = Var.LoginSuccess;
-			msg.obj = String.valueOf(R.string.login_success);
-			System.out.println((String) msg.obj);
 			mUpdateHandler.sendMessage(msg);
 			try {
 				//SendMessage(Var.serverSip, "", "ACK");
