@@ -18,13 +18,11 @@ import java.util.Map;
 
 public class ContactsAdapter extends BaseExpandableListAdapter {
 
-
-    private List<String> mGroup;
+    private List<Group> mGroup;
     private Map<Integer, List<Contact>> mChildren;
     private Context context;
     LayoutInflater inflater;
-
-    public ContactsAdapter(Context context, List<String> mGroup, Map<Integer, List<Contact>> mChildren){
+    public ContactsAdapter(Context context, List<Group> mGroup, Map<Integer, List<Contact>> mChildren){
         this.context=context;
         inflater = LayoutInflater.from(context);
         this.mGroup=mGroup;
@@ -32,13 +30,6 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
     }
     public Contact getChild(int groupPosition, int childPosition) {
         return mChildren.get(groupPosition).get(childPosition);
-    }
-    public void addUser(Contact contact) {
-        int groupId = contact.getGroup();
-        if (groupId < mGroup.size()) {
-            mChildren.get(groupId).add(contact);
-            notifyDataSetChanged();// 更新一下
-        }
     }
 
     public long getChildId(int groupPosition, int childPosition) {
@@ -101,10 +92,17 @@ public class ContactsAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.buddy_listview_group_item, null);
         }
         TextView groupNameTextView=(TextView) convertView.findViewById(R.id.buddy_listview_group_name);
-        groupNameTextView.setText(getGroup(groupPosition).toString());
 
         TextView onlineNum = (TextView) convertView.findViewById(R.id.buddy_listview_group_num);
-        onlineNum.setText(getChildrenCount(groupPosition) + "/"+ getChildrenCount(groupPosition));
+        Group group = mGroup.get(groupPosition);
+        groupNameTextView.setText(group.getName());
+        if (group.getOnlineNum() == -1){
+            onlineNum.setText("");
+        }
+        else {
+            System.out.println("在线好友个数：" + group.getOnlineNum());
+            onlineNum.setText(group.getOnlineNum()+ "/" + getChildrenCount(groupPosition));
+        }
 
         ImageView indicator = (ImageView) convertView.findViewById(R.id.buddy_listview_image);
         if (isExpanded)
