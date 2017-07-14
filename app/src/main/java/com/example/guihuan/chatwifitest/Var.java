@@ -1,8 +1,5 @@
 package com.example.guihuan.chatwifitest;
 
-/**
- * Created by Administrator on 2017/7/12.
- */
 
 public class Var {
     public static String serverSip="sip:Server@10.110.211.35:6666";
@@ -12,7 +9,7 @@ public class Var {
     public static String Username="client";
     //public static String host="10.28.253.70"; //桂欢手机ip
     //public static String host="10.28.245.174"; //孟越手机ip
-    public static String host="10.110.211.37"; //桂欢手机ip
+    public static String host = "10.110.211.38";
     public static int port=5080;
 
     public static String myName = "我";
@@ -31,4 +28,7 @@ public class Var {
     public static final int PasswordIncorrect = 11;
     public static final int UserHasLogined = 12;
     public static final int LoginSuccess = 13;
+
+    public static String friendList;
+    public static String onlineList;
 }

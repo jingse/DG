@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -58,12 +60,10 @@ public class MainActivity extends FragmentActivity {
     private ListView menuListView;
     private List<Map<String, String>> listRight;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); // 注意顺序
         setContentView(R.layout.main);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.main_title_bar);
@@ -74,12 +74,13 @@ public class MainActivity extends FragmentActivity {
         // 将标题栏的用户名设为正在聊天的人的用户名
         TextView my_name = findViewById(R.id.my_name);
         my_name.setText( myName);
-
+        InitViewPager();
 
         InitImageView();
         InitTextView();
-        InitViewPager();
         initParam();
+
+
     }
 
     private void InitViewPager() {

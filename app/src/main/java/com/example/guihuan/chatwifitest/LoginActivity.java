@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -14,7 +15,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.guihuan.chatwifitest.jsip_ua.SipProfile;
 import com.example.guihuan.chatwifitest.jsip_ua.impl.DeviceImpl;
@@ -29,69 +29,9 @@ public class LoginActivity extends Activity {
     private TextView btnNewUser;
     private String name;
     private String password;
-    private Context context;
-    //public String serverSip = "sip:Server@10.128.253.106:6666";
+    public String serverSip = "sip:Server@10.128.253.106:6666";
     SipProfile sipProfile;
-    private String friendList;
-    private String onlineFriendList;
-    boolean isSuccess = false;
-    boolean isGetList = false;
-
-    private Handler loginHandler = new Handler() {
-
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Var.UserHasLogined:
-                    isSuccess = false;
-                    isGetList = false;
-                    editName.setError(String.valueOf(msg.obj));
-                    break;
-                case Var.PasswordIncorrect:
-                    isSuccess = false;
-                    isGetList = false;
-                    editPassword.setError(String.valueOf(msg.obj));
-                    break;
-                case Var.UserNotExist:
-                    isSuccess = false;
-                    isGetList = false;
-                    editName.setError(String.valueOf(msg.obj));
-                case Var.LoginSuccess:
-                    isSuccess = true;
-                    isGetList = false;
-                    Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
-
-
-                    Intent intent = new Intent();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("user_name", name); //将用户名称传进去
-                    bundle.putString("friend_list", friendList); //将好友列表传进去
-                    bundle.putString("online_list",onlineFriendList);//将在线好友列表传进去
-                    intent.setClass(LoginActivity.this, MainActivity.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-
-                    break;
-                case Var.FriendList:
-                    if (isSuccess) {
-                        friendList = String.valueOf(msg.obj);
-                        isGetList = true;
-                    }
-                    break;
-                case Var.OnlineFriendList:
-                    if (isSuccess & isGetList){
-                        onlineFriendList = String.valueOf(msg.obj);
-                        isSuccess = false;
-                        isGetList = false;
-
-                        //传递用户名和好友列表、在线好友列表
-
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
+    private MyHandler myHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +45,9 @@ public class LoginActivity extends Activity {
         customHeaders.put("customHeader2", "customValue2");
 
         DeviceImpl.getInstance().Initialize(getApplicationContext(), sipProfile, customHeaders);
-        DeviceImpl.getInstance().setChatHandler(loginHandler);
+        myHandler = new MyHandler();
+        DeviceImpl.getInstance().setChatHandler(myHandler);
 
-        context = getBaseContext();
         editName = (EditText) findViewById(R.id.edit_name);
         editPassword = (EditText) findViewById(R.id.edit_password);
         btnLogin = (Button) findViewById(R.id.btn_login);
@@ -147,6 +87,60 @@ public class LoginActivity extends Activity {
 
 
     }
+    class MyHandler extends Handler {
+        public MyHandler() {
+        }
+
+        public MyHandler(Looper L) {
+            super(L);
+        }
+
+        // 子类必须重写此方法，接受数据
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case Var.FriendList:
+                    Var.friendList = String.valueOf(msg.obj);
+                    System.out.println("好友列表："+ Var.friendList);
+                    break;
+                case Var.OnlineFriendList:
+                    Var.onlineList = String.valueOf(msg.obj);
+                    System.out.println("在线好友列表："+ Var.onlineList);
+                    break;
+                case Var.UserHasLogined:
+                    editName.setError(getString(R.string.user_has_logined));
+                    break;
+                case Var.PasswordIncorrect:
+                    editPassword.setError(getString(R.string.password_incorrect));
+                    break;
+                case Var.UserNotExist:
+                    editName.setError(getString(R.string.user_not_exist));
+                    break;
+                case Var.LoginSuccess:
+                    Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("user_name", name); //将用户名称传进去
+                    intent.setClass(LoginActivity.this, MainActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+        myHandler = new MyHandler();
+        DeviceImpl.getInstance().setChatHandler(myHandler);
+
+    }
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+    }
 
     private boolean checkName() {
         editName.setError(null);
@@ -180,4 +174,5 @@ public class LoginActivity extends Activity {
         DeviceImpl.getInstance().SendMessage(Var.serverSip, name + "&" + password, "INVITE");
 
     }
+
 }
