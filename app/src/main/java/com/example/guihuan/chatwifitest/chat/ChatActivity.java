@@ -413,7 +413,14 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
             updateMsgUI(content, ChatMsg.TYPE_RECEIVED, friendImageId);
         }
         else{
-            msgList.get(msgId).setNotReadCount(++notReadCount);
+            int pos = 0;
+            for(int i = 0; i < msgList.size(); i++) {
+                if(msgList.get(i).getName().equals(friendName)) {
+                    pos = i;
+                }
+            }
+
+            msgList.get(pos).setNotReadCount(++notReadCount);
             DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
         }
     }
@@ -426,7 +433,14 @@ public class ChatActivity extends FragmentActivity implements FaceFragment.OnEmo
                 updateMsgUI(content, ChatMsg.TYPE_RECEIVED, R.drawable.headgroupmember);
         }
         else{
-            msgList.get(msgId).setNotReadCount(++notReadCount);
+            int pos = 0;
+            for(int i = 0; i < msgList.size(); i++) {
+                if(msgList.get(i).getName().equals(friendName)) {
+                    pos = i;
+                }
+            }
+
+            msgList.get(pos).setNotReadCount(++notReadCount);
             DeviceImpl.getInstance().getReCallMsgList().add(from + "#502750694#" + content);
         }
     }
